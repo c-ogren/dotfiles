@@ -130,16 +130,24 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"), {
 --------------------------------------------------
 
 hl.bind("SHIFT + code:107", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | wl-copy]]))
-
-hl.bind("code:107", hl.dsp.exec_cmd([[grim "$HOME/Pictures/screenshot-$(date +%s).png"]]))
-
+hl.bind(
+	"code:107",
+	hl.dsp.exec_cmd(
+		[[grim -o "$(hyprctl activeworkspace -j | jq -r '.monitor')" "$HOME/Pictures/screenshot-$(date +%s).png"]]
+	)
+)
 hl.bind("CTRL + code:107", hl.dsp.exec_cmd("$HOME/.local/bin/grimvideo.sh"))
 
-hl.bind("SUPER + code:118", hl.dsp.exec_cmd([[grim "$HOME/Pictures/screenshot-$(date +%s).png"]]))
+hl.bind(
+	"SUPER + Insert",
+	hl.dsp.exec_cmd(
+		[[grim -o "$(hyprctl activeworkspace -j | jq -r '.monitor')" "$HOME/Pictures/screenshot-$(date +%s).png"]]
+	)
+)
 
-hl.bind("SUPER + SHIFT + code:118", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | wl-copy]]))
+hl.bind("SUPER + SHIFT + Insert", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | wl-copy]]))
 
-hl.bind("SUPER + CTRL + code:118", hl.dsp.exec_cmd("$HOME/.local/bin/grimvideo.sh"))
+hl.bind("SUPER + CTRL + Insert", hl.dsp.exec_cmd("$HOME/.local/bin/grimvideo.sh"))
 
 --------------------------------------------------
 -- Main bindings

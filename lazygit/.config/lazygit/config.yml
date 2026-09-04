@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+
+gui:
+  # JetBrainsMono Nerd Font
+  nerdFontsVersion: "3"
+  showFileIcons: true
+
+  # Clean, compact UI
+  border: rounded
+  sidePanelWidth: 0.30
+  scrollHeight: 2
+  scrollPastBottom: false
+  scrollOffMargin: 2
+
+  # Useful Git information without too much noise
+  showListFooter: true
+  showFileTree: true
+  showRootItemInFileTree: false
+  showNumstatInFilesView: true
+  showRandomTip: false
+  showCommandLog: true
+  showBottomLine: true
+  showPanelJumps: true
+
+  # Useful when working on feature branches / PRs
+  showBranchCommitHash: false
+  showDivergenceFromBaseBranch: arrowAndNumber
+
+  # Vim-ish workflow
+  wrapLinesInStagingView: true
+  useHunkModeInStagingView: true
+  filterMode: fuzzy
+
+  # GitHub Dark / deutan-friendly
+  theme:
+    activeBorderColor:
+      - "#539BF5"
+      - bold
+
+    inactiveBorderColor:
+      - "#768390"
+
+    searchingActiveBorderColor:
+      - "#56D4DD"
+      - bold
+
+    optionsTextColor:
+      - "#539BF5"
+
+    selectedLineBgColor:
+      - "#373E47"
+
+    inactiveViewSelectedLineBgColor:
+      - "#2D333B"
+
+    cherryPickedCommitFgColor:
+      - "#539BF5"
+
+    cherryPickedCommitBgColor:
+      - "#373E47"
+
+    markedBaseCommitFgColor:
+      - "#56D4DD"
+
+    markedBaseCommitBgColor:
+      - "#373E47"
+
+    unstagedChangesColor:
+      - "#E5534B"
+
+    defaultFgColor:
+      - "#ADBAC7"
+
+  # Don't assign every author some random rainbow color.
+  authorColors:
+    "*": "#ADBAC7"
+
+  # Make common branch families visually distinct without relying
+  # primarily on red/green differences.
+  branchColorPatterns:
+    "^main$": "#539BF5"
+    "^master$": "#539BF5"
+    "^develop$": "#56D4DD"
+    "^feature/": "#986EE2"
+    "^feat/": "#986EE2"
+    "^fix/": "#C69026"
+    "^hotfix/": "#E5534B"
+    "^setup/": "#56D4DD"
+    "^chore/": "#768390"
+
+git:
+  autoFetch: true
+  autoRefresh: true

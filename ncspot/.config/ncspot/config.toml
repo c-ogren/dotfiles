@@ -1,0 +1,86 @@
+use_nerdfont = true
+
+initial_screen = "library"
+bitrate = 320
+gapless = true
+audio_cache = true
+audio_cache_size = 1024
+
+volnorm = true
+volnorm_pregain = 0.0
+
+shuffle = false
+repeat = "off"
+playback_state = "Paused"
+
+notify = true
+hide_display_names = true
+
+library_tabs = [
+  "tracks",
+  "albums",
+  "artists",
+  "playlists",
+  "browse",
+]
+
+statusbar_format = "%title - %artists"
+
+[track_format]
+left = "%title - %artists"
+center = "%album"
+right = "%saved %duration"
+
+[notification_format]
+title = "%title"
+body = "%artists"
+
+[theme]
+background = "#0d1117"
+primary = "#c9d1d9"
+secondary = "#8b949e"
+
+title = "#58a6ff"
+
+playing = "#58a6ff"
+playing_selected = "#ffffff"
+playing_bg = "#161b22"
+
+highlight = "#ffffff"
+highlight_bg = "#1f6feb"
+
+error = "#ffffff"
+error_bg = "#da3633"
+
+statusbar = "#c9d1d9"
+statusbar_progress = "#58a6ff"
+statusbar_bg = "#161b22"
+
+cmdline = "#c9d1d9"
+cmdline_bg = "#0d1117"
+
+search_match = "#e3b341"
+
+[keybindings]
+"j" = "move down 1"
+"k" = "move up 1"
+"h" = "move left 1"
+"l" = "move right 1"
+
+"Shift+h" = "seek -10s"
+"Shift+l" = "seek +10s"
+
+"Space" = "playpause"
+
+"Ctrl+j" = "voldown"
+"Ctrl+k" = "volup"
+
+"n" = "next"
+"Shift+n" = "previous"
+
+"r" = "repeat"
+"Shift+r" = "shuffle"
+
+"/" = "focus search"
+
+"Shift+q" = "quit"

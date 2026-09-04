@@ -1,12 +1,8 @@
-# Font configuration
 font-family = "JetBrainsMono Nerd Font"
-#font-family = "EnvyCodeR Nerd Font Mono"
 font-size = 12
 
-# Window configuration
 background-opacity = 1.0
 
-# Colors: GitHub Dark Pro (Deutan Optimized)
 background = #0d1117
 foreground = #c9d1d9
 cursor-color = #58a6ff
@@ -14,8 +10,6 @@ cursor-style = block
 cursor-style-blink = true
 shell-integration-features = no-cursor
 
-# ANSI Escape Colors
-# Normal
 palette = 0=#161b22
 palette = 1=#ff7b72
 palette = 2=#58a6ff

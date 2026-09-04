@@ -1,7 +1,6 @@
 add_newline = true
 
 format = """
-[](#22272E)\
 $username\
 $hostname\
 [](fg:#22272E bg:#C69026)\
@@ -15,7 +14,7 @@ $nodejs\
 $python\
 [](fg:#539BF5 bg:#D2A8FF)\
 $time\
-[](fg:#D2A8FF)\
+[](fg:#D2A8FF)\
 $line_break\
 $character
 """

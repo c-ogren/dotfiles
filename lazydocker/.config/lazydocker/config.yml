@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://json.schemastore.org/lazydocker.json
+
+gui:
+  language: auto
+  border: rounded
+
+  scrollHeight: 2
+  sidePanelWidth: 0.30
+
+  wrapMainPanel: true
+  showBottomLine: true
+  expandFocusedSidePanel: false
+  screenMode: normal
+
+  containerStatusHealthStyle: short
+
+  theme:
+    activeBorderColor:
+      - blue
+      - bold
+
+    inactiveBorderColor:
+      - white
+
+    selectedLineBgColor:
+      - black
+
+    optionsTextColor:
+      - cyan
+
+logs:
+  timestamps: true
+  since: "60m"
+  tail: "500"
+
+commandTemplates:
+  dockerCompose: docker compose
+
+stats:
+  graphs:
+    - caption: CPU (%)
+      statPath: DerivedStats.CPUPercentage
+      color: blue
+
+    - caption: Memory (%)
+      statPath: DerivedStats.MemoryPercentage
+      color: cyan
+
+customCommands:
+  containers:
+    - name: shell
+      attach: true
+      command: "docker exec -it {{ .Container.ID }} sh"
+      serviceNames: []

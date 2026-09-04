@@ -45,7 +45,8 @@ vim.opt.completeopt = {
 }
 
 -- Neovim 0.11+
-vim.o.winborder = "rounded" --------------------------------------------------
+vim.o.winborder = "rounded"
+--------------------------------------------------
 -- Deutan-friendly highlights
 --------------------------------------------------
 
