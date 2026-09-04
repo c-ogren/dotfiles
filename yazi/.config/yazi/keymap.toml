@@ -1,0 +1,19 @@
+[[manager.keymap]]
+on = ["l"]
+run = "open"
+desc = "Open file"
+
+[[manager.keymap]]
+on = ["f"]
+run = "search"
+desc = "Fuzzy search files"
+
+[[manager.keymap]]
+on = ["/"]
+run = "search fd"
+desc = "FZF-style file search"
+
+[[manager.keymap]]
+on = ["<C-f>"]
+run = 'shell "fd --type f | fzf --preview \"bat {}\" | xargs -r xdg-open"'
+desc = "Fuzzy open file"

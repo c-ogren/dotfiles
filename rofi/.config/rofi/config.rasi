@@ -1,0 +1,103 @@
+configuration {
+    modi: "drun";
+    show-icons: true;
+    icon-theme: "Papirus-Dark";
+    font: "JetBrainsMono Nerd Font 13";
+    drun-display-format: "{name}";
+    
+    /* Maps your Wofi configuration rules */
+    display-drun: ""; 
+    fixed-num-lines: true;
+}
+
+@theme "/dev/null"
+
+window {
+    width: 600px;
+    height: 400px;
+    location: center;
+    anchor: center;
+    border: 2px;
+    border-color: #58a6ff; /* High-contrast Deutan Blue */
+    border-radius: 6px;
+    
+    background-color: rgba(13, 17, 23, 95%); 
+    padding: 15px; /* Matches #outer-box margin */
+}
+
+mainbox {
+    background-color: transparent;
+    padding: 5px; /* Matches #inner-box margin */
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    margin: 0px 0px 12px 0px;
+    padding: 8px 12px;
+    border: 1px;
+    border-color: #30363d;
+    border-radius: 4px;
+    background-color: #161b22; /* High-contrast Deutan Blue */ 
+    children: [ prompt, entry ];
+}
+
+prompt {
+    background-color: transparent;
+    text-color: #58a6ff;
+    padding: 0px 5px 0px 0px;
+}
+
+entry {
+    background-color: transparent;
+    text-color: #c9d1d9;
+    placeholder: "Search applications...";
+    placeholder-color: #484f58;
+}
+
+listview {
+    background-color: transparent;
+    fixed-height: true;
+    dynamic: true;
+    cycle: true;
+    scrollbar: false;
+}
+
+element {
+    padding: 6px 10px;
+    margin: 2px 0px;
+    border: 1px;
+    border-color: transparent;
+    border-radius: 4px;
+    background-color: transparent;
+    text-color: #c9d1d9;
+}
+
+/* Base text/icon states */
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+    text-color: #c9d1d9;
+}
+
+/* Selected item / Mouse hover state mapping */
+element selected.normal {
+    background-color: #21262d; /* High-contrast Deutan Blue */
+    text-color: #58a6ff;
+    border-radius: 4px;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+/* Forces selected text to go bold and shift color */
+element-text selected.normal {
+    font-weight: bold;
+}
+
+element-icon {
+    background-color: transparent;
+    size: 20px;
+    padding: 0px 10px 0px 0px;
+}

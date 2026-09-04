@@ -1,0 +1,9 @@
+width=600
+height=400
+location=center
+show=drun
+prompt=Search applications...
+filter_rate=100
+allow_images=true
+# Forces wofi to use the layer shell like Waybar for clean integration
+layer=top

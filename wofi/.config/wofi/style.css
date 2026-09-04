@@ -1,0 +1,64 @@
+/* Global font matching your terminal and bar */
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+}
+
+/* Main window matching your Ghostty opacity and Waybar border style */
+window {
+    margin: 0px;
+    border: 2px solid #58a6ff; /* Uses your blue accent from Waybar */
+    border-radius: 6px;
+    /* Uses your black background with the 0.7 opacity from Ghostty */
+    background-color: rgba(13, 17, 23, 0.85); 
+}
+
+/* Outer box padding */
+#outer-box {
+    margin: 15px;
+}
+
+/* Inner layout box */
+#inner-box {
+    margin: 5px;
+}
+
+/* Search Input field matching your modular Waybar styling */
+#input {
+    margin: 0px 0px 12px 0px;
+    padding: 8px 12px;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    color: #c9d1d9;
+    background-color: #1b1f24;
+}
+
+/* Individual list entries */
+#entry {
+    padding: 6px 10px;
+    margin: 2px 0px;
+    border: 1px solid transparent;
+}
+
+/* Hover state matching your active workspace interactions */
+#entry:hover {
+    background-color: rgba(22, 27, 34, 0.5);
+    border-radius: 4px;
+}
+
+/* Selected item state using your theme's deep purple accent */
+#entry:selected {
+    background-color: #161b22;
+    border-radius: 4px;
+}
+
+/* Standard list item text color */
+#text {
+    color: #c9d1d9;
+}
+
+/* Text color change when an item is selected - uses your gold accent */
+#entry:selected #text {
+    color: #58a6ff;
+    font-weight: bold;
+}
