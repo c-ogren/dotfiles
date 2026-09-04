@@ -1,0 +1,22 @@
+# Backups
+*.bak
+*.bak.*
+*.old
+*~
+
+# Runtime/state
+*.cbor
+*.log
+*.tmp
+
+# Generated
+*.generated
+
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+
+# peaclock specific
+peaclock/.peaclock/history/

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
+  "logo": {
+    "type": "file",
+    "source": "~/.config/fastfetch/logo-r.txt",
+    "padding": {
+      "right": 4,
+      "bottom": 1,
+      "top": 1,
+      "left": 1
+    },
+    "color": {
+      "1": "#79c0ff",
+      "2": "#58a6ff",
+      "3": "#1f6feb",
+      "4": "#e3b341",
+      "5": "#56b4e9",
+      "6": "#768390"
+    }
+  },
+
+  "display": {
+    "separator": " ",
+    "key": {
+      "width": 16
+    }
+  },
+
+  "modules": [
+    "break",
+    "break",
+    "title",
+    {
+      "type": "separator",
+      "string": "─",
+      "length": 40
+    },
+    {
+      "type": "host",
+      "key": "󰍩 Host",
+      "keyColor": "34"
+    },
+    {
+      "type": "os",
+      "key": "󰣇 OS",
+      "keyColor": "34"
+    },
+    {
+      "type": "kernel",
+      "key": "󰒋 Kernel",
+      "keyColor": "34"
+    },
+    {
+      "type": "wm",
+      "key": " WM",
+      "keyColor": "34"
+    },
+    {
+      "type": "terminal",
+      "key": " Terminal",
+      "keyColor": "34"
+    },
+    {
+      "type": "shell",
+      "key": " Shell",
+      "keyColor": "34"
+    },
+    {
+      "type": "command",
+      "key": "󱓞 Prompt",
+      "keyColor": "34",
+      "text": "starship --version 2>/dev/null | head -n1"
+    },
+    {
+      "type": "packages",
+      "key": "󰏖 Packages",
+      "keyColor": "34"
+    },
+    {
+      "type": "localip",
+      "key": "󰩟 Network",
+      "keyColor": "34"
+    },
+    {
+      "type": "uptime",
+      "key": "󰅐 Uptime",
+      "keyColor": "34"
+    },
+    "break",
+    "colors",
+  ]
+}

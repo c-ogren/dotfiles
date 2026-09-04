@@ -1,0 +1,6 @@
+[mgr]
+
+prepend_keymap = [
+    { on = ["f"], run = "find --smart", desc = "Find file" },
+    { on = ["/"], run = "search --via=fd", desc = "Search files recursively" },
+]

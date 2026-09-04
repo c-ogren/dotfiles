@@ -1,0 +1,85 @@
+{
+  "layer": "top",
+  "position": "bottom",
+  "tooltip": true,
+
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+
+  "modules-right": [
+    "power-profiles-daemon",
+    "cpu",
+    "memory",
+    "disk",
+    "network",
+    "pulseaudio",
+    "battery",
+    "tray"
+  ],
+
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "",
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    }
+  },
+
+  "clock": {
+    "format": "  {:%a, %b %d %H:%M}"
+  },
+
+  "cpu": {
+    "format": "  {usage}%"
+  },
+
+  "memory": {
+    "format": "  {used}G / {total}G"
+  },
+  
+  "disk": {
+    "format": "  {used}/{total}",
+    "path": "/"
+  },
+
+  "temperature": {
+    "format": " {temperatureC}°C",
+    "critical-threshold": 85
+  },
+
+  "network": {
+    "format-wifi": "  {essid}",
+    "format-ethernet": "󰈀  eth",
+    "format-disconnected": "󰤭  off"
+  },
+
+  "pulseaudio": {
+    "format": "  {volume}%",
+    "format-muted": "  muted",
+    "tooltip-format": "Volume: {volume}%",
+    "on-click": "pavucontrol",
+    "on-click-right": "pamixer -t"
+  },
+
+  "battery": {
+    "format": "  {capacity}%",
+    "format-charging": " {capacity}%"
+  },
+
+  "load": {
+    "format": "  {1m}"
+  },
+
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "format-icons": {
+      "active": "",
+      "default": ""
+    },
+    "sort-by": "number"
+  }
+}

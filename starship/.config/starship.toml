@@ -1,0 +1,72 @@
+add_newline = true
+
+format = """
+$username\
+$hostname\
+[](fg:#22272E bg:#C69026)\
+$directory\
+[](fg:#C69026 bg:#56D4DD)\
+$git_branch\
+$git_status\
+[](fg:#56D4DD bg:#539BF5)\
+$rust\
+$nodejs\
+$python\
+[](fg:#539BF5 bg:#D2A8FF)\
+$time\
+[](fg:#D2A8FF)\
+$line_break\
+$character
+"""
+
+[username]
+show_always = true
+style_user = "fg:#CDD9E5 bg:#22272E bold"
+style_root = "fg:#E5534B bg:#22272E bold"
+format = "[  $user ]($style)"
+
+[hostname]
+ssh_only = false
+style = "fg:#56D4DD bg:#22272E bold"
+format = "[@$hostname ]($style)"
+
+[directory]
+style = "fg:#22272E bg:#C69026 bold"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncate_to_repo = false
+
+[git_branch]
+symbol = " "
+style = "fg:#22272E bg:#56D4DD bold"
+format = "[ $symbol$branch ]($style)"
+
+[git_status]
+style = "fg:#22272E bg:#56D4DD bold"
+format = "[$all_status$ahead_behind ]($style)"
+
+[rust]
+symbol = " "
+style = "fg:#22272E bg:#539BF5 bold"
+format = "[ $symbol$version ]($style)"
+
+[nodejs]
+symbol = " "
+style = "fg:#22272E bg:#539BF5 bold"
+format = "[ $symbol$version ]($style)"
+
+[python]
+symbol = " "
+style = "fg:#22272E bg:#539BF5 bold"
+format = "[ $symbol$version ]($style)"
+
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "fg:#22272E bg:#D2A8FF bold"
+format = "[  $time ]($style)"
+
+[character]
+success_symbol = "[∴](bold #57AB5A)"
+error_symbol = "[∴](bold #E5534B)"
+vimcmd_symbol = "[∴](bold #56D4DD)"

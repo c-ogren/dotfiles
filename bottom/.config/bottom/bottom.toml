@@ -1,0 +1,141 @@
+[flags]
+rate = "1s"
+default_time_value = "60s"
+time_delta = "15s"
+temperature_type = "c"
+table_gap = "space"
+show_table_scroll_position = true
+show_table_scroll_bar = true
+
+[cpu]
+default = "average"
+show_decimal = true
+
+[processes]
+columns = [
+    "cpu%",
+    "mem%",
+    "pid",
+    "name",
+    "read",
+    "write",
+    "user",
+    "time",
+]
+default_sort = "cpu%"
+sort_order = "Descending"
+default_memory_value = true
+hide_k_threads = true
+
+[memory_graph]
+legend_position = "top-left"
+cache_memory = true
+short_gpu_names = true
+
+[network_graph]
+legend_position = "top-left"
+use_bytes = true
+use_binary_prefix = true
+show_packets = true
+
+[temperature_graph]
+legend_position = "top-left"
+max_temp = 100.0
+
+# ============================================================
+# GitHub Dark / Deutan-Friendly Theme
+# ============================================================
+
+[styles.tables]
+headers = { colour = "#539BF5", bold = true }
+
+[styles.graphs]
+graph_colour = "#545D68"
+legend_text = { colour = "#ADBAC7" }
+
+[styles.widgets]
+border_colour = "#444C56"
+selected_border_colour = "#539BF5"
+widget_title = { colour = "#768390", bold = true }
+text = { colour = "#ADBAC7" }
+selected_text = { colour = "#22272E", bg_colour = "#539BF5", bold = true }
+disabled_text = { colour = "#545D68" }
+thread_text = { colour = "#57AB5A" }
+
+[styles.cpu]
+all_entry_colour = "#539BF5"
+avg_entry_colour = "#57AB5A"
+cpu_core_colours = [
+    "#539BF5",
+    "#56D4DD",
+    "#57AB5A",
+    "#C69026",
+    "#986EE2",
+    "#768390",
+]
+
+[styles.memory]
+ram_colour = "#539BF5"
+cache_colour = "#56D4DD"
+swap_colour = "#C69026"
+gpu_colours = [
+    "#57AB5A",
+    "#539BF5",
+]
+
+[styles.network]
+rx_colour = "#539BF5"
+tx_colour = "#56D4DD"
+rx_total_colour = "#57AB5A"
+tx_total_colour = "#C69026"
+
+[styles.battery]
+high_battery_colour = "#57AB5A"
+medium_battery_colour = "#C69026"
+low_battery_colour = "#E5534B"
+
+
+# ============================================================
+# Layout
+# ============================================================
+
+[[row]]
+ratio = 25
+
+    [[row.child]]
+    ratio = 4
+    type = "cpu"
+
+    [[row.child]]
+    ratio = 1
+    type = "battery"
+
+
+[[row]]
+ratio = 30
+
+    [[row.child]]
+    ratio = 3
+    type = "mem"
+
+    [[row.child]]
+    ratio = 2
+
+        [[row.child.child]]
+        type = "temp"
+
+        [[row.child.child]]
+        type = "disk"
+
+
+[[row]]
+ratio = 45
+
+    [[row.child]]
+    ratio = 2
+    type = "net"
+
+    [[row.child]]
+    ratio = 5
+    type = "proc"
+    default = true

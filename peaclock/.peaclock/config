@@ -1,0 +1,7 @@
+set seconds on
+
+# GitHub Dark / deutan-friendly
+style active-bg #58a6ff
+style colon-bg #e3b341
+style date #8b949e
+style background clear
