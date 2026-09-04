@@ -1,317 +1,141 @@
-# This is a default config file for bottom. All of the settings are commented
-# out by default; if you wish to change them uncomment and modify as you see
-# fit.
-
-# This group of options represents a command-line option. Flags explicitly
-# added when running (ie: btm -a) will override this config file if an option
-# is also set here.
 [flags]
-# Whether to hide the average cpu entry.
-#hide_avg_cpu = false
+rate = "1s"
+default_time_value = "60s"
+time_delta = "15s"
+temperature_type = "c"
+table_gap = "space"
+show_table_scroll_position = true
+show_table_scroll_bar = true
+
+[cpu]
+default = "average"
+show_decimal = true
+
+[processes]
+columns = [
+    "cpu%",
+    "mem%",
+    "pid",
+    "name",
+    "read",
+    "write",
+    "user",
+    "time",
+]
+default_sort = "cpu%"
+sort_order = "Descending"
+default_memory_value = true
+hide_k_threads = true
+
+[memory_graph]
+legend_position = "top-left"
+cache_memory = true
+short_gpu_names = true
+
+[network_graph]
+legend_position = "top-left"
+use_bytes = true
+use_binary_prefix = true
+show_packets = true
+
+[temperature_graph]
+legend_position = "top-left"
+max_temp = 100.0
+
+# ============================================================
+# GitHub Dark / Deutan-Friendly Theme
+# ============================================================
+
+[styles.tables]
+headers = { colour = "#539BF5", bold = true }
+
+[styles.graphs]
+graph_colour = "#545D68"
+legend_text = { colour = "#ADBAC7" }
+
+[styles.widgets]
+border_colour = "#444C56"
+selected_border_colour = "#539BF5"
+widget_title = { colour = "#768390", bold = true }
+text = { colour = "#ADBAC7" }
+selected_text = { colour = "#22272E", bg_colour = "#539BF5", bold = true }
+disabled_text = { colour = "#545D68" }
+thread_text = { colour = "#57AB5A" }
+
+[styles.cpu]
+all_entry_colour = "#539BF5"
+avg_entry_colour = "#57AB5A"
+cpu_core_colours = [
+    "#539BF5",
+    "#56D4DD",
+    "#57AB5A",
+    "#C69026",
+    "#986EE2",
+    "#768390",
+]
+
+[styles.memory]
+ram_colour = "#539BF5"
+cache_colour = "#56D4DD"
+swap_colour = "#C69026"
+gpu_colours = [
+    "#57AB5A",
+    "#539BF5",
+]
+
+[styles.network]
+rx_colour = "#539BF5"
+tx_colour = "#56D4DD"
+rx_total_colour = "#57AB5A"
+tx_total_colour = "#C69026"
+
+[styles.battery]
+high_battery_colour = "#57AB5A"
+medium_battery_colour = "#C69026"
+low_battery_colour = "#E5534B"
+
+
+# ============================================================
+# Layout
+# ============================================================
+
+[[row]]
+ratio = 25
 
-# Whether to use a dedicated row for the average cpu entry
-#average_cpu_row = false
+    [[row.child]]
+    ratio = 4
+    type = "cpu"
 
-# Whether to use dot markers rather than braille.
-#dot_marker = false
+    [[row.child]]
+    ratio = 1
+    type = "battery"
 
-# The update rate of the application.
-#rate = "1s"
 
-# Whether to put the CPU legend to the left.
-#cpu_left_legend = false
+[[row]]
+ratio = 30
 
-# Whether to set CPU% on a process to be based on the total CPU or just current usage.
-#current_usage = false
+    [[row.child]]
+    ratio = 3
+    type = "mem"
 
-# Whether to set CPU% on a process to be based on the total CPU or per-core CPU% (not divided by the number of cpus).
-#unnormalized_cpu = false
+    [[row.child]]
+    ratio = 2
 
-# Whether to group processes with the same name together by default. Doesn't do anything
-# if tree is set to true or --tree is set.
-#group_processes = false
+        [[row.child.child]]
+        type = "temp"
 
-# Whether to make process searching case sensitive by default.
-#case_sensitive = false
+        [[row.child.child]]
+        type = "disk"
 
-# Whether to make process searching look for matching the entire word by default.
-#whole_word = false
 
-# Whether to make process searching use regex by default.
-#regex = false
+[[row]]
+ratio = 45
 
-# The temperature unit. One of the following, defaults to "c" for Celsius:
-#temperature_type = "c"
-##temperature_type = "k"
-##temperature_type = "f"
-##temperature_type = "kelvin"
-##temperature_type = "fahrenheit"
-##temperature_type = "celsius"
+    [[row.child]]
+    ratio = 2
+    type = "net"
 
-# The default time interval (in milliseconds).
-#default_time_value = "60s"
-
-# The time delta on each zoom in/out action (in milliseconds).
-#time_delta = 15000
-
-# Hides the time scale.
-#hide_time = false
-
-# Override layout default widget
-#default_widget_type = "proc"
-#default_widget_count = 1
-
-# Expand selected widget upon starting the app
-#expanded = true
-
-# Use basic mode
-#basic = false
-
-# Use the old network legend style
-#use_old_network_legend = false
-
-# Remove space in tables
-#hide_table_gap = false
-
-# Show the battery widgets
-#battery = false
-
-# Disable mouse clicks
-#disable_click = false
-
-# Disable keyboard shortcuts
-#disable_keys = false
-
-# Show memory values in the processes widget as values by default
-#process_memory_as_value = false
-
-# Show tree mode by default in the processes widget.
-#tree = false
-
-# Shows an indicator in table widgets tracking where in the list you are.
-#show_table_scroll_position = false
-
-# Show processes as their commands by default in the process widget.
-#process_command = false
-
-# Displays the network widget with binary prefixes.
-#network_use_binary_prefix = false
-
-# Displays the network widget using bytes.
-#network_use_bytes = false
-
-# Displays the network widget with a log scale.
-#network_use_log = false
-
-# Hides advanced options to stop a process on Unix-like systems.
-#disable_advanced_kill = false
-
-# Prevents performing any actions that affect the system (e.g. stopping processes).
-#read_only = false
-
-# Hides the kernel threads
-#hide_k_threads = false
-
-# Hide GPU(s) information
-#disable_gpu = false
-
-# Shows cache and buffer memory
-#enable_cache_memory = false
-
-# Subtract freeable ARC from memory usage
-#free_arc = false
-
-# How much data is stored at once in terms of time.
-#retention = "10m"
-
-# Where to place the legend for the memory widget. One of "none", "top-left", "top", "top-right", "left", "right", "bottom-left", "bottom", "bottom-right".
-#memory_legend = "top-right"
-
-# Where to place the legend for the network widget. One of "none", "top-left", "top", "top-right", "left", "right", "bottom-left", "bottom", "bottom-right".
-#network_legend = "top-right"
-
-
-# Processes widget configuration
-#[processes]
-# The columns shown by the process widget. The following columns are supported (the GPU columns are only available if the GPU feature is enabled when built):
-# PID, Name, CPU%, Mem%, R/s, W/s, T.Read, T.Write, User, State, Time, GMem%, GPU%, Nice, Priority
-#columns = ["PID", "Name", "CPU%", "Mem%", "Virt", "R/s", "W/s", "T.Read", "T.Write", "User", "State", "GMem%", "GPU%", "Priority"]
-
-# Gather process child thread information
-#get_threads = false
-
-
-# CPU widget configuration
-#[cpu]
-# One of "all" (default), "average"/"avg"
-#default = "average"
-
-
-# Disk widget configuration
-#[disk]
-# The columns shown by the process widget. The following columns are supported:
-# Disk, Mount, Used, Free, Total, Used%, Free%, R/s, W/s
-#columns = ["Disk", "Mount", "Used", "Free", "Total", "Used%", "R/s", "W/s"]
-
-# By default, there are no disk name filters enabled. These can be turned on to filter out specific data entries if you
-# don't want to see them. An example use case is provided below.
-#[disk.name_filter]
-# Whether to ignore any matches. Defaults to true.
-#is_list_ignored = true
-
-# A list of filters to try and match.
-#list = ["/dev/sda\\d+", "/dev/nvme0n1p2"]
-
-# Whether to use regex. Defaults to false.
-#regex = true
-
-# Whether to be case-sensitive. Defaults to false.
-#case_sensitive = false
-
-# Whether to be require matching the whole word. Defaults to false.
-#whole_word = false
-
-# By default, there are no mount name filters enabled. An example use case is provided below.
-#[disk.mount_filter]
-# Whether to ignore any matches. Defaults to true.
-#is_list_ignored = true
-
-# A list of filters to try and match.
-#list = ["/mnt/.*", "/boot"]
-
-# Whether to use regex. Defaults to false.
-#regex = true
-
-# Whether to be case-sensitive. Defaults to false.
-#case_sensitive = false
-
-# Whether to be require matching the whole word. Defaults to false.
-#whole_word = false
-
-
-# Temperature widget configuration
-#[temperature]
-# By default, there are no temperature sensor filters enabled. An example use case is provided below.
-#[temperature.sensor_filter]
-# Whether to ignore any matches. Defaults to true.
-#is_list_ignored = true
-
-# A list of filters to try and match.
-#list = ["cpu", "wifi"]
-
-# Whether to use regex. Defaults to false.
-#regex = false
-
-# Whether to be case-sensitive. Defaults to false.
-#case_sensitive = false
-
-# Whether to be require matching the whole word. Defaults to false.
-#whole_word = false
-
-
-# Network widget configuration
-#[network]
-# By default, there are no network interface filters enabled. An example use case is provided below.
-#[network.interface_filter]
-# Whether to ignore any matches. Defaults to true.
-#is_list_ignored = true
-
-# A list of filters to try and match.
-#list = ["virbr0.*"]
-
-# Whether to use regex. Defaults to false.
-#regex = true
-
-# Whether to be case-sensitive. Defaults to false.
-#case_sensitive = false
-
-# Whether to be require matching the whole word. Defaults to false.
-#whole_word = false
-
-
-# These are all the components that support custom theming.  Note that colour support
-# will depend on terminal support.
-#[styles] # Uncomment if you want to use custom styling
-# Built-in themes. Valid values are:
-# - "default"
-# - "default-light"
-# - "gruvbox"
-# - "gruvbox-light"
-# - "nord"
-# - "nord-light".
-#
-# This will have the lowest precedence if a custom colour palette is set,
-# or overridden if the command-line flag for a built-in theme is set.
-#theme = "default"
-
-#[styles.cpu]
-#all_entry_color = "green"
-#avg_entry_color = "red"
-#cpu_core_colors = ["light magenta", "light yellow", "light cyan", "light green", "light blue", "cyan", "green", "blue"]
-
-#[styles.memory]
-#ram_color = "light magenta"
-#cache_color = "light red"
-#swap_color = "light yellow"
-#arc_color = "light cyan"
-#gpu_colors = ["light blue", "light red", "cyan", "green", "blue", "red"]
-
-#[styles.network]
-#rx_color = "light magenta"
-#tx_color = "light yellow"
-#rx_total_color = "light cyan"
-#tx_total_color = "light green"
-
-#[styles.battery]
-#high_battery_color = "green"
-#medium_battery_color = "yellow"
-#low_battery_color = "red"
-
-#[styles.tables]
-#headers = {color = "light blue", bold = true}
-
-#[styles.graphs]
-#graph_color = "gray"
-#legend_text = {color = "gray"}
-
-#[styles.widgets]
-#border_color = "gray"
-#selected_border_color = "light blue"
-#widget_title = {color = "gray"}
-#text = {color = "gray"}
-#selected_text = {color = "black", bg_color = "light blue"}
-#disabled_text = {color = "dark gray"}
-
-# Only on Linux
-#thread_text = {color = "green"}
-
-# Layout - layouts follow a pattern like this:
-# [[row]] represents a row in the application.
-# [[row.child]] represents either a widget or a column.
-# [[row.child.child]] represents a widget.
-#
-# All widgets must have the type value set to one of ["cpu", "mem", "proc", "net", "temp", "disk", "empty"].
-# All layout components have a ratio value - if this is not set, then it defaults to 1.
-# The default widget layout:
-#[[row]]
-#  ratio=30
-#  [[row.child]]
-#  type="cpu"
-#[[row]]
-#    ratio=40
-#    [[row.child]]
-#      ratio=4
-#      type="mem"
-#    [[row.child]]
-#      ratio=3
-#      [[row.child.child]]
-#        type="temp"
-#      [[row.child.child]]
-#        type="disk"
-#[[row]]
-#  ratio=30
-#  [[row.child]]
-#    type="net"
-#  [[row.child]]
-#    type="proc"
-#    default=true
+    [[row.child]]
+    ratio = 5
+    type = "proc"
+    default = true
