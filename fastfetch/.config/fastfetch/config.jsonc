@@ -31,11 +31,7 @@
     "break",
     "break",
     "title",
-    {
-      "type": "separator",
-      "string": "─",
-      "length": 40
-    },
+    "break",
     {
       "type": "host",
       "key": "󰍩 Host",

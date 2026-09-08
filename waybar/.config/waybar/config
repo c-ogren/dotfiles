@@ -3,16 +3,28 @@
   "position": "bottom",
   "tooltip": true,
 
-  "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["clock"],
+  "modules-left": [
+    "hyprland/workspaces",
+    "hyprland/window"
+  ],
+
+  "modules-center": [
+    "mpris",
+    "clock"
+  ],
 
   "modules-right": [
     "power-profiles-daemon",
     "cpu",
+    "temperature",
     "memory",
+    "load",
+    "custom/uptime",
+    "privacy",
     "disk",
     "network",
     "pulseaudio",
+    "bluetooth",
     "battery",
     "tray"
   ],
@@ -29,12 +41,36 @@
     }
   },
 
+  "mpris": {
+    "format": "  {artist} - {title}",
+    "format-paused": "  {artist} - {title}",
+    "max-length": 35
+  },
+
   "clock": {
-    "format": "  {:%a, %b %d %H:%M}"
+    "interval": 1,
+    "format": "  {:%a, %b %d %H:%M}",
+    "tooltip-format": "<big><b>  {:%H:%M:%S}</b></big>\n\n<tt>{calendar}</tt>",
+
+    "calendar": {
+      "mode": "month",
+      "format": {
+        "today": "<span background='#539BF5' color='#0d1117'><b> {} </b></span>"
+      }
+    }
+  },
+
+  "bluetooth": {
+    "format": "",
+    "format-connected": " {num_connections}",
+    "format-disabled": "󰂲",
+    "tooltip-format": "{controller_alias}\n{num_connections} connected"
   },
 
   "cpu": {
-    "format": "  {usage}%"
+    "interval": 2,
+    "format": "  {usage}%",
+    "tooltip-format": "Usage: {usage}%\nFrequency: {avg_frequency:.1f} GHz\nLoad: {load1}"
   },
 
   "memory": {
@@ -54,7 +90,30 @@
   "network": {
     "format-wifi": "  {essid}",
     "format-ethernet": "󰈀  eth",
-    "format-disconnected": "󰤭  off"
+    "format-disconnected": "󰤭  off",
+
+    "tooltip-format-wifi":
+      "{essid}\n{ipaddr}\n󰇚 {bandwidthDownBytes}  󰕒 {bandwidthUpBytes}",
+
+    "tooltip-format-ethernet":
+      "{ifname}\n{ipaddr}\n󰇚 {bandwidthDownBytes}  󰕒 {bandwidthUpBytes}"
+  },
+
+  "temperature": {
+    "format": "  {temperatureC}°C",
+    "critical-threshold": 85
+  },
+
+  "privacy": {
+    "icon-spacing": 6,
+    "modules": [
+      {
+        "type": "screenshare"
+      },
+      {
+        "type": "audio-in"
+      }
+    ]
   },
 
   "pulseaudio": {
@@ -70,8 +129,16 @@
     "format-charging": " {capacity}%"
   },
 
+  "custom/uptime": {
+    "exec": "uptime -p | sed 's/up //'",
+    "interval": 60,
+    "format": "󰔟  {}",
+    "tooltip": false
+  },
+
   "load": {
-    "format": "  {1m}"
+    "format": "  {load1}",
+    "tooltip-format": "1 min: {load1}\n5 min: {load5}\n15 min: {load15}"
   },
 
   "hyprland/workspaces": {
@@ -81,5 +148,10 @@
       "default": ""
     },
     "sort-by": "number"
+  },
+
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 40
   }
 }

@@ -10,7 +10,7 @@ export LANG="en_US.UTF-8"
 
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT="-c"
-
+export ZK_NOTEBOOK_DIR="$HOME/notes"
 
 # ============================================================
 # 2. History & Core Behavior
@@ -101,6 +101,7 @@ alias path='print -l ${(s.:.)PATH}'
 alias history='fc -lfD'
 
 alias zj='zellij'
+alias ff='clear && fastfetch && read -rsk1'
 
 alias sshsafe='TERM=xterm-256color ssh -o "IdentitiesOnly=yes" -o "PubkeyAuthentication=yes" -o "PasswordAuthentication=no"'
 
