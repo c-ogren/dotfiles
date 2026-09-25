@@ -1,2 +1,6 @@
 [tools]
-node = "lts"
+node = "latest"
+"npm:prettier" = "latest"
+"npm:typescript" = "6"
+"npm:typescript-language-server" = "latest"
+pnpm = "latest"

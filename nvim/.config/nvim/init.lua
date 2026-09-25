@@ -423,6 +423,46 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 --------------------------------------------------
+-- C config
+--------------------------------------------------
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "c", "cpp" },
+
+	callback = function()
+		vim.opt_local.shiftwidth = 4
+		vim.opt_local.tabstop = 4
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "c",
+
+	callback = function(args)
+		vim.keymap.set("n", "<leader>cr", function()
+			vim.cmd("write")
+
+			local file = vim.fn.expand("%:p")
+			local output = vim.fn.expand("%:p:r")
+
+			vim.cmd(
+				"botright 12split | terminal gcc -Wall -Wextra -Wpedantic -g "
+					.. vim.fn.shellescape(file)
+					.. " -o "
+					.. vim.fn.shellescape(output)
+					.. " && "
+					.. vim.fn.shellescape(output)
+			)
+
+			vim.cmd("startinsert")
+		end, {
+			buffer = args.buf,
+			desc = "Compile and run C",
+		})
+	end,
+})
+
+--------------------------------------------------
 -- Lazy.nvim bootstrap
 --------------------------------------------------
 
@@ -482,18 +522,36 @@ require("lazy").setup({
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			-- Apply cmp capabilities to all LSP servers,
-			-- including rust-analyzer.
 			vim.lsp.config("*", {
 				capabilities = capabilities,
 			})
 
+			local result = vim.system({
+				"mise",
+				"where",
+				"npm:typescript@6",
+			}, { text = true }):wait()
+
+			if result.code ~= 0 then
+				vim.notify(
+					"Could not locate TypeScript 6 through mise:\n" .. (result.stderr or ""),
+					vim.log.levels.ERROR
+				)
+				return
+			end
+
+			local ts_path = vim.trim(result.stdout)
+
 			vim.lsp.config("ts_ls", {
 				cmd = {
-					"pnpm",
-					"exec",
 					"typescript-language-server",
 					"--stdio",
+				},
+
+				init_options = {
+					tsserver = {
+						fallbackPath = ts_path .. "/node_modules/typescript/lib",
+					},
 				},
 
 				filetypes = {
@@ -511,6 +569,26 @@ require("lazy").setup({
 			})
 
 			vim.lsp.enable("ts_ls")
+
+			vim.lsp.config("clangd", {
+				cmd = {
+					"clangd",
+					"--background-index",
+					"--clang-tidy",
+					"--header-insertion=iwyu",
+					"--completion-style=detailed",
+				},
+
+				root_markers = {
+					"compile_commands.json",
+					"compile_flags.txt",
+					".clangd",
+					".clang-format",
+					".git",
+				},
+			})
+
+			vim.lsp.enable("clangd")
 		end,
 	},
 
@@ -597,6 +675,8 @@ require("lazy").setup({
 				"tsx",
 				"javascript",
 				"rust",
+				"c",
+				"cpp",
 				"lua",
 				"json",
 				"css",
@@ -613,6 +693,8 @@ require("lazy").setup({
 					"typescriptreact",
 					"javascript",
 					"javascriptreact",
+					"c",
+					"cpp",
 					"rust",
 					"lua",
 					"json",
@@ -830,9 +912,19 @@ require("lazy").setup({
 						"prettier",
 					},
 
-					javascript = {
-						"prettier",
-					},
+					javascript = function(bufnr)
+						local filename = vim.api.nvim_buf_get_name(bufnr)
+
+						if filename:match("%.str$") or filename:match("%.std$") then
+							return {
+								"prettier_strudel",
+							}
+						end
+
+						return {
+							"prettier",
+						}
+					end,
 
 					javascriptreact = {
 						"prettier",
@@ -842,8 +934,26 @@ require("lazy").setup({
 						"rustfmt",
 					},
 
+					c = {
+						"clang_format",
+					},
+
+					cpp = {
+						"clang_format",
+					},
+
 					lua = {
 						"stylua",
+					},
+				},
+
+				formatters = {
+					prettier_strudel = {
+						inherit = "prettier",
+						append_args = {
+							"--parser",
+							"babel",
+						},
 					},
 				},
 
@@ -952,6 +1062,7 @@ require("lazy").setup({
 	{
 		"zbirenbaum/copilot.lua",
 
+		enabled = false, -- Disable Copilot plugin
 		cmd = "Copilot",
 		event = "InsertEnter",
 
@@ -985,6 +1096,8 @@ require("lazy").setup({
 
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
+
+		enabled = false,
 
 		dependencies = {
 			{
@@ -1198,6 +1311,24 @@ require("lazy").setup({
 				desc = "Quickfix list",
 			},
 		},
+	},
+
+	--- Trying strudel
+	{
+		"gruvw/strudel.nvim",
+		build = "npm ci",
+
+		config = function()
+			require("strudel").setup({
+				headless = false,
+				browser_exec_path = vim.fn.exepath("chromium"),
+				sync_cursor = true,
+
+				ui = {
+					maximise_menu_panel = true,
+				},
+			})
+		end,
 	},
 
 	------------------------------------------------
@@ -1453,41 +1584,43 @@ require("lazy").setup({
 
 --------------------------------------------------
 -- Copilot keymaps
+-- NOTE: i no longer pay for copilot, so I am disabling
+-- this
 --------------------------------------------------
 
-local copilot_active = true
-
-vim.keymap.set("n", "<leader>ct", function()
-	if copilot_active then
-		vim.cmd("Copilot disable")
-		vim.notify("Copilot: OFF")
-		copilot_active = false
-	else
-		vim.cmd("Copilot enable")
-		vim.notify("Copilot: ON")
-		copilot_active = true
-	end
-end, {
-	desc = "Toggle Copilot",
-})
-
-vim.keymap.set({ "n", "v" }, "<leader>cc", function()
-	require("CopilotChat").toggle()
-end, {
-	desc = "Toggle Copilot Chat",
-})
-
-vim.keymap.set("n", "<leader>cq", function()
-	vim.ui.input({
-		prompt = "Quick Chat: ",
-	}, function(input)
-		if input and input ~= "" then
-			require("CopilotChat").ask(input)
-		end
-	end)
-end, {
-	desc = "Quick Copilot Chat",
-})
+-- local copilot_active = false
+--
+-- vim.keymap.set("n", "<leader>ct", function()
+-- 	if copilot_active then
+-- 		vim.cmd("Copilot disable")
+-- 		vim.notify("Copilot: OFF")
+-- 		copilot_active = false
+-- 	else
+-- 		vim.cmd("Copilot enable")
+-- 		vim.notify("Copilot: ON")
+-- 		copilot_active = true
+-- 	end
+-- end, {
+-- 	desc = "Toggle Copilot",
+-- })
+--
+-- vim.keymap.set({ "n", "v" }, "<leader>cc", function()
+-- 	require("CopilotChat").toggle()
+-- end, {
+-- 	desc = "Toggle Copilot Chat",
+-- })
+--
+-- vim.keymap.set("n", "<leader>cq", function()
+-- 	vim.ui.input({
+-- 		prompt = "Quick Chat: ",
+-- 	}, function(input)
+-- 		if input and input ~= "" then
+-- 			require("CopilotChat").ask(input)
+-- 		end
+-- 	end)
+-- end, {
+-- 	desc = "Quick Copilot Chat",
+-- })
 
 --------------------------------------------------
 -- Apply highlights once at startup

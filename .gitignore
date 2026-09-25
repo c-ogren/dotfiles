@@ -20,3 +20,7 @@
 
 # peaclock specific
 peaclock/.peaclock/history/
+
+# cava specific
+cava/.config/cava/shaders/*.frag
+

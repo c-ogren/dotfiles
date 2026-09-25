@@ -91,10 +91,49 @@ alias mv='mv -i'
 alias rm='rm -I'
 
 alias ports='sudo ss -tulpn'
-alias myip='curl -fsS ifconfig.me; echo'
 
-myipinfo() {
-    curl -fsS ipinfo.io | jq
+myip() {
+  case "$1" in
+    4|ipv4|-4)
+      curl -4 -fsS https://ifconfig.me
+      echo
+      ;;
+    6|ipv6|-6)
+      curl -6 -fsS https://ifconfig.me
+      echo
+      ;;
+    "")
+      echo "IPv4: $(curl -4 -fsS https://ifconfig.me 2>/dev/null || echo unavailable)"
+      echo "IPv6: $(curl -6 -fsS https://ifconfig.me 2>/dev/null || echo unavailable)"
+      ;;
+    *)
+      echo "usage: myip [4|6]"
+      return 1
+      ;;
+  esac
+}
+
+ipinfo() {
+  local token_file="$HOME/.config/ipinfo/token"
+  local ip="$1"
+
+  if [[ ! -r "$token_file" ]]; then
+    echo "ipinfo token not found: $token_file" >&2
+    return 1
+  fi
+
+  local token
+  token=$(<"$token_file")
+
+  if [[ -n "$ip" ]]; then
+    curl -fsS \
+      -H "Authorization: Bearer $token" \
+      "https://ipinfo.io/$ip" | jq
+  else
+    curl -fsS \
+      -H "Authorization: Bearer $token" \
+      "https://ipinfo.io" | jq
+  fi
 }
 
 alias path='print -l ${(s.:.)PATH}'
