@@ -526,21 +526,33 @@ require("lazy").setup({
 				capabilities = capabilities,
 			})
 
-			local result = vim.system({
-				"mise",
-				"where",
-				"npm:typescript@6",
-			}, { text = true }):wait()
+			-- Use mise's TypeScript 6 as the fallback tsserver when a
+			-- project has none. vim.system throws if mise isn't on PATH
+			-- (e.g. nvim launched from rofi), hence the pcall. Failure
+			-- must not stop the rest of the LSP setup (clangd).
+			local ok, result = pcall(function()
+				return vim.system({
+					"mise",
+					"where",
+					"npm:typescript@6",
+				}, { text = true }):wait()
+			end)
 
-			if result.code ~= 0 then
+			local init_options
+
+			if ok and result.code == 0 then
+				init_options = {
+					tsserver = {
+						fallbackPath = vim.trim(result.stdout) .. "/node_modules/typescript/lib",
+					},
+				}
+			else
 				vim.notify(
-					"Could not locate TypeScript 6 through mise:\n" .. (result.stderr or ""),
-					vim.log.levels.ERROR
+					"Could not locate TypeScript 6 through mise; ts_ls will use the project's TypeScript:\n"
+						.. (ok and result.stderr or tostring(result)),
+					vim.log.levels.WARN
 				)
-				return
 			end
-
-			local ts_path = vim.trim(result.stdout)
 
 			vim.lsp.config("ts_ls", {
 				cmd = {
@@ -548,11 +560,7 @@ require("lazy").setup({
 					"--stdio",
 				},
 
-				init_options = {
-					tsserver = {
-						fallbackPath = ts_path .. "/node_modules/typescript/lib",
-					},
-				},
+				init_options = init_options,
 
 				filetypes = {
 					"javascript",

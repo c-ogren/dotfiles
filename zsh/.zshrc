@@ -8,8 +8,10 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 export LANG="en_US.UTF-8"
 
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export MANROFFOPT="-c"
+if (( $+commands[bat] )); then
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    export MANROFFOPT="-c"
+fi
 export ZK_NOTEBOOK_DIR="$HOME/notes"
 
 # ============================================================
@@ -21,6 +23,8 @@ HISTSIZE=10000
 SAVEHIST=10000
 
 setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE      # leading space = keep out of history
+setopt HIST_REDUCE_BLANKS
 setopt HIST_FIND_NO_DUPS
 setopt SHARE_HISTORY
 
@@ -31,7 +35,26 @@ setopt NO_BEEP
 
 
 # ============================================================
-# 3. Key Bindings
+# 3. Completion
+# ============================================================
+
+zmodload zsh/complist
+autoload -Uz compinit
+
+_zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
+[[ -d "${_zcompdump:h}" ]] || mkdir -p "${_zcompdump:h}"
+compinit -d "$_zcompdump"
+unset _zcompdump
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format '%F{blue}-- %d --%f'
+
+
+# ============================================================
+# 4. Key Bindings
 # ============================================================
 
 bindkey -e
@@ -40,12 +63,28 @@ autoload -U up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
-bindkey "^[[A" up-line-or-beginning-search
-bindkey "^[[B" down-line-or-beginning-search
+# Bind both the normal-mode sequence and the terminfo (application-mode) one,
+# since terminals/multiplexers differ in which they send.
+_bindkey_both() {
+    local widget="$1" raw="$2" cap="$3"
+    bindkey "$raw" "$widget"
+    [[ -n "${terminfo[$cap]}" ]] && bindkey "${terminfo[$cap]}" "$widget"
+}
+
+_bindkey_both up-line-or-beginning-search   '^[[A'  kcuu1
+_bindkey_both down-line-or-beginning-search '^[[B'  kcud1
+_bindkey_both beginning-of-line             '^[[H'  khome
+_bindkey_both end-of-line                   '^[[F'  kend
+_bindkey_both delete-char                   '^[[3~' kdch1
+_bindkey_both reverse-menu-complete         '^[[Z'  kcbt
+unfunction _bindkey_both
+
+bindkey '^[[1;5C' forward-word    # Ctrl+Right
+bindkey '^[[1;5D' backward-word   # Ctrl+Left
 
 
 # ============================================================
-# 4. Eza
+# 5. Eza
 # ============================================================
 
 export EZA_COLORS='di=38;2;88;166;255:'\
@@ -67,14 +106,16 @@ export EZA_COLORS='di=38;2;88;166;255:'\
 'sb=38;2;201;209;217:'\
 'xx=38;2;255;123;114'
 
-alias ls='eza --icons=auto'
-alias ll='eza -la --icons=auto'
-alias la='eza -a --icons=auto'
-alias lt='eza --tree --level=2 --icons=auto'
+if (( $+commands[eza] )); then
+    alias ls='eza --icons=auto'
+    alias ll='eza -la --icons=auto'
+    alias la='eza -a --icons=auto'
+    alias lt='eza --tree --level=2 --icons=auto'
+fi
 
 
 # ============================================================
-# 5. General Aliases
+# 6. General Aliases
 # ============================================================
 
 alias c='bat'
@@ -148,7 +189,7 @@ alias nvrun='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia'
 
 
 # ============================================================
-# 6. Git Aliases
+# 7. Git Aliases
 # ============================================================
 
 alias gs='git status'
@@ -159,18 +200,15 @@ alias gl='git log --oneline --graph --decorate'
 
 
 # ============================================================
-# 7. FZF
+# 8. FZF
 # ============================================================
 
 [[ -r /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
 [[ -r /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
 
-bindkey "^T" fzf-file-widget
-bindkey "^R" fzf-history-widget
-
 
 # ============================================================
-# 8. Runtime Initializations
+# 9. Runtime Initializations
 # ============================================================
 
 (( $+commands[starship] )) && eval "$(starship init zsh)"
@@ -185,7 +223,7 @@ fi
 
 
 # ============================================================
-# 9. Zoxide + FZF Helper
+# 10. Zoxide + FZF Helper
 # ============================================================
 
 zi() {
@@ -201,7 +239,7 @@ zi() {
 
 
 # ============================================================
-# 10. Git Helper
+# 11. Git Helper
 # ============================================================
 
 # Usage:
@@ -216,8 +254,17 @@ gnew() {
     shift
     local message="$*"
 
+    # Commit what's staged; if nothing is, stage tracked changes only
+    # (never sweep up untracked files).
+    if git diff --cached --quiet; then
+        git add -u || return
+        if git diff --cached --quiet; then
+            echo 'gnew: nothing to commit (stage new files with git add first)' >&2
+            return 1
+        fi
+    fi
+
     git switch -c "$branch" &&
-    git add . &&
     git commit -m "$message" &&
     git push -u origin "$branch" &&
     gh pr create --fill
@@ -225,7 +272,7 @@ gnew() {
 
 
 # ============================================================
-# 11. Process Memory Helper
+# 12. Process Memory Helper
 # ============================================================
 
 vmrss() {
@@ -252,7 +299,7 @@ vmrss() {
 
 
 # ============================================================
-# 12. Firewall Helper
+# 13. Firewall Helper
 # ============================================================
 
 firewall() {
@@ -285,11 +332,18 @@ firewall() {
 }
 
 # ============================================================
-# 13. Zsh Plugins
+# 14. Zsh Plugins
 # ============================================================
 
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+_zplug=/usr/share/zsh/plugins
+[[ -r $_zplug/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
+    source $_zplug/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Must be sourced last.
+[[ -r $_zplug/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+    source $_zplug/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+unset _zplug
+
+typeset -gA ZSH_HIGHLIGHT_STYLES
 
 # GitHub Dark / deutan-friendly syntax highlighting.
 ZSH_HIGHLIGHT_STYLES[command]='fg=#57AB5A,bold'

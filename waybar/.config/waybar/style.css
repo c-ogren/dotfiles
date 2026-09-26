@@ -148,12 +148,3 @@ tooltip label {
   color: #CDD9E5;
   padding: 10px;
 }
-
-#mpris {
-  color: #CDD9E5;
-  padding: 0 10px;
-}
-
-#mpris.paused {
-  color: #768390;
-}

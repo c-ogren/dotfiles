@@ -82,11 +82,6 @@
     "path": "/"
   },
 
-  "temperature": {
-    "format": " {temperatureC}°C",
-    "critical-threshold": 85
-  },
-
   "network": {
     "format-wifi": "  {essid}",
     "format-ethernet": "󰈀  eth",
