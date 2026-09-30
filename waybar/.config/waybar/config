@@ -4,7 +4,7 @@
   "tooltip": true,
 
   "modules-left": [
-    "hyprland/workspaces",
+    "ext/workspaces",
     "hyprland/window"
   ],
 
@@ -95,6 +95,8 @@
   },
 
   "temperature": {
+    "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+    "input-filename": "temp1_input",
     "format": "  {temperatureC}°C",
     "critical-threshold": 85
   },
@@ -136,13 +138,11 @@
     "tooltip-format": "1 min: {load1}\n5 min: {load5}\n15 min: {load15}"
   },
 
-  "hyprland/workspaces": {
-    "format": "{id}",
-    "format-icons": {
-      "active": "",
-      "default": ""
-    },
-    "sort-by": "number"
+  // Not hyprland/workspaces: waybar 0.15 switches workspace with the legacy
+  // `dispatch workspace N`, which Hyprland's Lua config rejects.
+  "ext/workspaces": {
+    "format": "{name}",
+    "on-click": "activate"
   },
 
   "hyprland/window": {

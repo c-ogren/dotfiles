@@ -807,19 +807,19 @@ require("lazy").setup({
 						gs.nav_hunk("prev")
 					end, "Previous Git hunk")
 
-					map("n", "<leader>hs", gs.stage_hunk, "Stage Git hunk")
+					map("n", "<leader>gs", gs.stage_hunk, "Stage Git hunk")
 
-					map("n", "<leader>hr", gs.reset_hunk, "Reset Git hunk")
+					map("n", "<leader>gr", gs.reset_hunk, "Reset Git hunk")
 
-					map("n", "<leader>hp", gs.preview_hunk, "Preview Git hunk")
+					map("n", "<leader>gp", gs.preview_hunk, "Preview Git hunk")
 
-					map("n", "<leader>hb", function()
+					map("n", "<leader>gb", function()
 						gs.blame_line({
 							full = true,
 						})
 					end, "Blame line")
 
-					map("n", "<leader>hd", gs.diffthis, "Git diff buffer")
+					map("n", "<leader>gd", gs.diffthis, "Git diff buffer")
 				end,
 			})
 		end,
@@ -1064,71 +1064,6 @@ require("lazy").setup({
 	},
 
 	------------------------------------------------
-	-- Copilot
-	------------------------------------------------
-
-	{
-		"zbirenbaum/copilot.lua",
-
-		enabled = false, -- Disable Copilot plugin
-		cmd = "Copilot",
-		event = "InsertEnter",
-
-		config = function()
-			require("copilot").setup({
-				-- nvim-cmp handles Copilot suggestions.
-				suggestion = {
-					enabled = true,
-					auto_trigger = true,
-
-					keymap = {
-						accept = "<C-j>",
-						accept_word = "<C-w>",
-						accept_line = "<C-l>",
-						next = "<M-]>",
-						prev = "<M-[>",
-						dismiss = "<C-]>",
-					},
-				},
-
-				panel = {
-					enabled = false,
-				},
-			})
-		end,
-	},
-
-	------------------------------------------------
-	-- Copilot Chat
-	------------------------------------------------
-
-	{
-		"CopilotC-Nvim/CopilotChat.nvim",
-
-		enabled = false,
-
-		dependencies = {
-			{
-				"zbirenbaum/copilot.lua",
-			},
-
-			{
-				"nvim-lua/plenary.nvim",
-				branch = "master",
-			},
-		},
-
-		build = "make tiktoken",
-
-		opts = {
-			window = {
-				layout = "vertical",
-				width = 0.4,
-			},
-		},
-	},
-
-	------------------------------------------------
 	-- Autopairs
 	------------------------------------------------
 
@@ -1205,12 +1140,12 @@ require("lazy").setup({
 				desc = "Flash",
 			},
 
+			-- Not in visual mode: nvim-surround owns visual `S`.
 			{
 				"S",
 				mode = {
 					"n",
 					"o",
-					"x",
 				},
 
 				function()
@@ -1589,46 +1524,6 @@ require("lazy").setup({
 		enabled = false,
 	},
 })
-
---------------------------------------------------
--- Copilot keymaps
--- NOTE: i no longer pay for copilot, so I am disabling
--- this
---------------------------------------------------
-
--- local copilot_active = false
---
--- vim.keymap.set("n", "<leader>ct", function()
--- 	if copilot_active then
--- 		vim.cmd("Copilot disable")
--- 		vim.notify("Copilot: OFF")
--- 		copilot_active = false
--- 	else
--- 		vim.cmd("Copilot enable")
--- 		vim.notify("Copilot: ON")
--- 		copilot_active = true
--- 	end
--- end, {
--- 	desc = "Toggle Copilot",
--- })
---
--- vim.keymap.set({ "n", "v" }, "<leader>cc", function()
--- 	require("CopilotChat").toggle()
--- end, {
--- 	desc = "Toggle Copilot Chat",
--- })
---
--- vim.keymap.set("n", "<leader>cq", function()
--- 	vim.ui.input({
--- 		prompt = "Quick Chat: ",
--- 	}, function(input)
--- 		if input and input ~= "" then
--- 			require("CopilotChat").ask(input)
--- 		end
--- 	end)
--- end, {
--- 	desc = "Quick Copilot Chat",
--- })
 
 --------------------------------------------------
 -- Apply highlights once at startup

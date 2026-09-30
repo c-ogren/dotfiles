@@ -24,3 +24,10 @@ peaclock/.peaclock/history/
 # cava specific (cava regenerates its stock shaders on launch)
 cava/.config/cava/shaders/
 
+
+# gitk writes its window/UI state here
+git/.config/git/gitk
+
+# posting: only themes are tracked; anything else it writes to its data dir is state
+posting/.local/share/posting/*
+!posting/.local/share/posting/themes/

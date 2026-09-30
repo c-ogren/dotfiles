@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  GitHub Dark, deutan-friendly. Used by bat and git-delta (syntax-theme).
+  Rules (see README): nothing is told apart by red vs green alone.
+    added / inserted = blue, changed = yellow, deleted = salmon,
+    and GitHub's green (tags, regex, success) becomes cyan.
+  Rebuild after editing: run "bat cache" with the build flag.
+-->
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>GitHub Dark Deutan</string>
+	<key>semanticClass</key>
+	<string>theme.dark.github_dark_deutan</string>
+	<key>settings</key>
+	<array>
+		<!-- Editor -->
+		<dict>
+			<key>settings</key>
+			<dict>
+				<key>background</key>
+				<string>#0d1117</string>
+				<key>foreground</key>
+				<string>#c9d1d9</string>
+				<key>caret</key>
+				<string>#58a6ff</string>
+				<key>lineHighlight</key>
+				<string>#21262d</string>
+				<key>selection</key>
+				<string>#30363d</string>
+				<key>invisibles</key>
+				<string>#484f58</string>
+				<key>gutter</key>
+				<string>#0d1117</string>
+				<key>gutterForeground</key>
+				<string>#6e7681</string>
+				<key>findHighlight</key>
+				<string>#e3b341</string>
+				<key>findHighlightForeground</key>
+				<string>#0d1117</string>
+			</dict>
+		</dict>
+
+		<!-- Comments -->
+		<dict>
+			<key>name</key>
+			<string>Comment</string>
+			<key>scope</key>
+			<string>comment, punctuation.definition.comment, string.comment</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#768390</string>
+				<key>fontStyle</key>
+				<string>italic</string>
+			</dict>
+		</dict>
+
+		<!-- Keywords / storage -->
+		<dict>
+			<key>name</key>
+			<string>Keyword</string>
+			<key>scope</key>
+			<string>keyword, storage, storage.type, storage.modifier, keyword.operator.new, keyword.operator.expression, keyword.operator.logical.python</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#ff7b72</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Operator</string>
+			<key>scope</key>
+			<string>keyword.operator, punctuation.separator.key-value</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#c9d1d9</string>
+			</dict>
+		</dict>
+
+		<!-- Strings -->
+		<dict>
+			<key>name</key>
+			<string>String</string>
+			<key>scope</key>
+			<string>string, punctuation.definition.string, string.quoted, string.template</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#a5d6ff</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Regex / escapes (GitHub green -> cyan)</string>
+			<key>scope</key>
+			<string>string.regexp, constant.character.escape, constant.other.character-class.regexp</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#39c5cf</string>
+			</dict>
+		</dict>
+
+		<!-- Constants / numbers -->
+		<dict>
+			<key>name</key>
+			<string>Constant</string>
+			<key>scope</key>
+			<string>constant, constant.numeric, constant.language, support.constant, variable.other.constant, variable.language, entity.name.constant, meta.property-name, support.type.property-name</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#79c0ff</string>
+			</dict>
+		</dict>
+
+		<!-- Functions -->
+		<dict>
+			<key>name</key>
+			<string>Function</string>
+			<key>scope</key>
+			<string>entity.name.function, support.function, meta.function-call entity.name, variable.function</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d2a8ff</string>
+			</dict>
+		</dict>
+
+		<!-- Types / classes (GitHub orange -> palette gold) -->
+		<dict>
+			<key>name</key>
+			<string>Type</string>
+			<key>scope</key>
+			<string>entity.name.type, entity.name.class, entity.other.inherited-class, support.type, support.class, entity.name.namespace, entity.name.module</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#e3b341</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Parameter</string>
+			<key>scope</key>
+			<string>variable.parameter</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#c9d1d9</string>
+			</dict>
+		</dict>
+
+		<!-- Markup-ish: tags (GitHub green -> cyan), attributes, keys -->
+		<dict>
+			<key>name</key>
+			<string>Tag</string>
+			<key>scope</key>
+			<string>entity.name.tag, meta.tag.sgml</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#39c5cf</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Attribute</string>
+			<key>scope</key>
+			<string>entity.other.attribute-name</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#79c0ff</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Key (JSON / YAML / TOML)</string>
+			<key>scope</key>
+			<string>meta.mapping.key string, entity.name.tag.yaml, support.type.property-name.json, keyword.key.toml, meta.object-literal.key</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#79c0ff</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Section header (INI / TOML)</string>
+			<key>scope</key>
+			<string>entity.name.section, meta.tag.table.toml, entity.name.section.group-title.ini</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d2a8ff</string>
+				<key>fontStyle</key>
+				<string>bold</string>
+			</dict>
+		</dict>
+
+		<!-- Markdown -->
+		<dict>
+			<key>name</key>
+			<string>Heading</string>
+			<key>scope</key>
+			<string>markup.heading, markup.heading entity.name, punctuation.definition.heading</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#58a6ff</string>
+				<key>fontStyle</key>
+				<string>bold</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Bold</string>
+			<key>scope</key>
+			<string>markup.bold</string>
+			<key>settings</key>
+			<dict>
+				<key>fontStyle</key>
+				<string>bold</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Italic</string>
+			<key>scope</key>
+			<string>markup.italic</string>
+			<key>settings</key>
+			<dict>
+				<key>fontStyle</key>
+				<string>italic</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Code / raw</string>
+			<key>scope</key>
+			<string>markup.raw, markup.inline.raw</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#79c0ff</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Link</string>
+			<key>scope</key>
+			<string>markup.underline.link, string.other.link, meta.link</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#a5d6ff</string>
+				<key>fontStyle</key>
+				<string>underline</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Quote</string>
+			<key>scope</key>
+			<string>markup.quote</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#768390</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>List bullet</string>
+			<key>scope</key>
+			<string>punctuation.definition.list, markup.list punctuation.definition</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#e3b341</string>
+			</dict>
+		</dict>
+
+		<!-- Diffs: add = blue, change = yellow, delete = salmon -->
+		<dict>
+			<key>name</key>
+			<string>Diff inserted</string>
+			<key>scope</key>
+			<string>markup.inserted, meta.diff.header.to-file, punctuation.definition.inserted</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#58a6ff</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Diff deleted</string>
+			<key>scope</key>
+			<string>markup.deleted, meta.diff.header.from-file, punctuation.definition.deleted</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#ffa198</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Diff changed</string>
+			<key>scope</key>
+			<string>markup.changed, punctuation.definition.changed</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#e3b341</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Diff range / hunk header</string>
+			<key>scope</key>
+			<string>meta.diff.range, meta.diff.header, meta.separator.diff</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#bc8cff</string>
+			</dict>
+		</dict>
+
+		<!-- Errors -->
+		<dict>
+			<key>name</key>
+			<string>Invalid</string>
+			<key>scope</key>
+			<string>invalid, invalid.illegal, invalid.deprecated</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#ffa198</string>
+				<key>fontStyle</key>
+				<string>italic underline</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

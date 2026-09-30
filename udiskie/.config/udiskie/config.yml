@@ -1,0 +1,17 @@
+# Started from hyprland.lua. Notifications go through swaync;
+# the tray icon shows in waybar's tray only while a device is attached.
+program_options:
+  automount: true
+  notify: true
+  tray: auto
+  menu: flat
+  # Opened from the tray / "Browse" notification action.
+  file_manager: ghostty -e yazi
+
+notifications:
+  timeout: 4
+  device_mounted: 4
+  device_unmounted: 3
+  device_added: false
+  device_removed: false
+  job_failed: -1

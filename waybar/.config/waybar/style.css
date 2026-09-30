@@ -49,8 +49,9 @@ window#waybar.empty #window {
   padding: 0 4px;
 }
 
+/* ext/workspaces only lists existing workspaces, so every button is occupied */
 #workspaces button {
-  color: #768390;
+  color: #CDD9E5;
 
   min-width: 22px;
   padding: 0 8px;
@@ -61,10 +62,6 @@ window#waybar.empty #window {
   border-radius: 4px;
 
   font-weight: bold;
-}
-
-#workspaces button.occupied {
-  color: #CDD9E5;
 }
 
 #workspaces button.active {

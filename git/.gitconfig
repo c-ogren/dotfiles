@@ -1,3 +1,40 @@
 [user]
 	email = curtis.ogren@proton.me
 	name = curtis ogren
+
+# git-delta pager, deutan-friendly: add = blue, delete = salmon.
+# Falls back to less / plain output where delta isn't installed.
+[core]
+	pager = "command -v delta >/dev/null && exec delta || exec less"
+[interactive]
+	diffFilter = "command -v delta >/dev/null && exec delta --color-only || exec cat"
+[merge]
+	conflictStyle = zdiff3
+
+[delta]
+	navigate = true              # n / N jump between files
+	line-numbers = true
+	hyperlinks = true
+	# Custom bat theme; needs `bat cache --build` (see bat package).
+	syntax-theme = github-dark-deutan
+
+	plus-style = syntax "#0f2a4a"
+	plus-emph-style = syntax "#1f4f8f"
+	plus-empty-line-marker-style = normal "#0f2a4a"
+	minus-style = syntax "#3b1b1d"
+	minus-emph-style = syntax "#6e2a2d"
+	minus-empty-line-marker-style = normal "#3b1b1d"
+	whitespace-error-style = "#0d1117" "#e3b341"
+
+	line-numbers-plus-style = "#58a6ff"
+	line-numbers-minus-style = "#ffa198"
+	line-numbers-zero-style = "#6e7681"
+	line-numbers-left-style = "#484f58"
+	line-numbers-right-style = "#484f58"
+
+	file-style = "#c9d1d9" bold
+	file-decoration-style = "#30363d" ul
+	hunk-header-style = file line-number syntax
+	hunk-header-decoration-style = "#30363d" box
+	hunk-header-line-number-style = "#bc8cff"
+	commit-decoration-style = "#e3b341" box

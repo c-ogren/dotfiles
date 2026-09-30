@@ -5,8 +5,9 @@ hl.env("AQ_NO_MODIFIERS", "1")
 
 local mainMod = "SUPER"
 local terminal = "ghostty"
-local fileManager = "dolphin"
 local menu = "rofi -show drun"
+-- Also used by hyprlock.conf; keep the two in sync.
+local wallpaper = "$HOME/wallpaper/wallpaper.png"
 
 --------------------------------------------------
 -- Monitor fallback
@@ -92,10 +93,12 @@ hl.config({
 --------------------------------------------------
 
 hl.on("hyprland.start", function()
-	hl.exec_cmd("swaybg -i /home/curt/wallpaper/wallpaper.png -m fill")
-	hl.exec_cmd("waybar")
-	hl.exec_cmd("swaync")
-	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+	-- Export the session env (WAYLAND_DISPLAY etc.) to systemd/dbus first, so
+	-- anything they activate (portals, swaync, ...) can reach the compositor.
+	hl.exec_cmd(
+		"dbus-update-activation-environment --systemd --all && { waybar & swaync & hypridle & udiskie & }"
+	)
+	hl.exec_cmd('swaybg -i "' .. wallpaper .. '" -m fill')
 end)
 
 --------------------------------------------------
@@ -137,7 +140,7 @@ hl.bind(
 		[[grim -o "$(hyprctl activeworkspace -j | jq -r '.monitor')" "$HOME/Pictures/screenshot-$(date +%s).png"]]
 	)
 )
-hl.bind("CTRL + code:107", hl.dsp.exec_cmd("$HOME/.local/bin/grimvideo.sh"))
+hl.bind("CTRL + code:107", hl.dsp.exec_cmd("$HOME/.local/bin/grim-video.sh"))
 
 hl.bind(
 	"SUPER + Insert",
@@ -148,7 +151,7 @@ hl.bind(
 
 hl.bind("SUPER + SHIFT + Insert", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | wl-copy]]))
 
-hl.bind("SUPER + CTRL + Insert", hl.dsp.exec_cmd("$HOME/.local/bin/grimvideo.sh"))
+hl.bind("SUPER + CTRL + Insert", hl.dsp.exec_cmd("$HOME/.local/bin/grim-video.sh"))
 
 --------------------------------------------------
 -- Main bindings

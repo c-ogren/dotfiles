@@ -1,0 +1,36 @@
+# GitHub Dark, deutan-friendly. Success is blue, never green.
+name: github-dark-deutan
+dark: true
+
+primary: "#58a6ff"
+secondary: "#39c5cf"
+accent: "#bc8cff"
+background: "#0d1117"
+surface: "#161b22"
+panel: "#21262d"
+foreground: "#c9d1d9"
+success: "#58a6ff"
+warning: "#d29922"
+error: "#ff7b72"
+
+syntax:
+  json_key: "#79c0ff"
+  json_string: "#a5d6ff"
+  json_number: "#79c0ff"
+  json_boolean: "#ff7b72"
+  json_null: "#768390"
+
+url:
+  base: "#c9d1d9"
+  protocol: "#768390"
+  separator: "#484f58"
+
+# Methods are told apart by hue, none by red vs green.
+method:
+  get: "#58a6ff"
+  post: "#39c5cf"
+  put: "#e3b341"
+  patch: "#bc8cff"
+  delete: "#ff7b72"
+  options: "#768390"
+  head: "#768390"

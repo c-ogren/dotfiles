@@ -1,0 +1,9 @@
+# GitHub Dark, deutan-friendly (themes/github-dark-deutan.tmTheme).
+# After adding or editing a theme, rebuild the cache: bat cache --build
+--theme="github-dark-deutan"
+
+# Line numbers, git change markers, file header.
+# Markers use ANSI green/yellow/red; ghostty maps green to blue.
+--style="numbers,changes,header"
+
+--italic-text=always

@@ -16,17 +16,17 @@ gui:
 
   theme:
     activeBorderColor:
-      - blue
+      - "#539BF5"
       - bold
 
     inactiveBorderColor:
-      - white
+      - "#444C56"
 
     selectedLineBgColor:
-      - black
+      - "#373E47"
 
     optionsTextColor:
-      - cyan
+      - "#56D4DD"
 
 logs:
   timestamps: true

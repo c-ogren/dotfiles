@@ -1,0 +1,9 @@
+# Theme file: ~/.local/share/posting/themes/github-dark-deutan.yaml
+theme: github-dark-deutan
+
+layout: horizontal
+animation: none
+
+heading:
+  show_host: true
+  show_version: false

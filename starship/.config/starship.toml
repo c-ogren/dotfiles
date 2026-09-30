@@ -67,6 +67,6 @@ style = "fg:#22272E bg:#D2A8FF bold"
 format = "[  $time ]($style)"
 
 [character]
-success_symbol = "[∴](bold #57AB5A)"
-error_symbol = "[∴](bold #E5534B)"
+success_symbol = "[❯](bold #539BF5)"
+error_symbol = "[✗](bold #E5534B)"
 vimcmd_symbol = "[∴](bold #56D4DD)"
