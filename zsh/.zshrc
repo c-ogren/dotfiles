@@ -13,6 +13,7 @@ if (( $+commands[bat] )); then
     export MANROFFOPT="-c"
 fi
 export ZK_NOTEBOOK_DIR="$HOME/notes"
+export GLOW_STYLE="$HOME/.config/glow/github-dark-deutan.json"  # glow.yml can't expand ~ or $HOME
 
 # ============================================================
 # 2. History & Core Behavior
@@ -324,8 +325,20 @@ firewall() {
             sudo ufw reload
             ;;
 
+        setup)
+            # Idempotent: ufw skips rules that already exist
+            sudo ufw default deny incoming
+            sudo ufw default allow outgoing
+            local net
+            for net in 192.168.0.0/16 10.0.0.0/8 172.16.0.0/12; do
+                sudo ufw allow from "$net" to any port 53317 comment 'LocalSend'
+            done
+            sudo ufw enable
+            sudo ufw status verbose
+            ;;
+
         *)
-            echo "usage: firewall {on|off|-v|status|rules|reload}"
+            echo "usage: firewall {on|off|-v|status|rules|reload|setup}"
             return 1
             ;;
     esac

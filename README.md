@@ -21,7 +21,7 @@ zsh/.zshrc                   ->  ~/.zshrc
 | Dev tools | `git` (+ git-delta), `mise`, `lazygit`, `lazydocker`, `posting` |
 | Session env | `environment` (systemd `environment.d`: `EDITOR`, `PATH`) |
 | Scripts | `scripts` (`~/.local/bin`: `grim-video.sh` screen recorder) |
-| TUIs | `yazi`, `bottom`, `cava`, `ncspot`, `fastfetch`, `peaclock` |
+| TUIs | `yazi`, `bottom`, `cava`, `ncspot`, `fastfetch`, `peaclock`, `glow` |
 
 ## Install
 
@@ -51,7 +51,7 @@ Not exhaustive, but what the configs call out to:
   brightnessctl, grim, slurp, wf-recorder, libnotify, wl-clipboard, pavucontrol, Bibata-Modern-Ice
   cursor, Papirus-Dark icons, JetBrainsMono Nerd Font
 - **Apps:** ghostty, neovim (0.11+), tmux, zellij, yazi, imv, zathura, btm,
-  cava, ncspot, lazygit, lazydocker, posting, fastfetch, peaclock
+  cava, ncspot, lazygit, lazydocker, posting, fastfetch, peaclock, glow
 - **Neovim tooling:** node/pnpm/prettier/typescript/typescript-language-server
   via `mise`, clangd, clang-format, rustup (rust-analyzer, rustfmt, clippy),
   stylua, eslint (per project), chromium (strudel.nvim)
@@ -75,7 +75,7 @@ rules below.
 
 Used by: ghostty, nvim, rofi, cava, ncspot, zellij, fastfetch, peaclock,
 Hyprland borders, eza, bat and git-delta (`bat/.config/bat/themes/github-dark-deutan.tmTheme`),
-posting.
+posting, glow (`glow/.config/glow/github-dark-deutan.json`, selected via `$GLOW_STYLE`).
 
 | Role | Hex |
 |---|---|
@@ -199,7 +199,7 @@ Ideas not set up yet. Anything added should follow the deutan rules above.
 - [ ] bluetui, impala (or `nmtui`): Bluetooth / Wi-Fi, launched from waybar clicks.
 - [ ] wiremix: TUI audio mixer (could replace pavucontrol).
 - [ ] mpv: `mpv.conf` with Wayland + hardware decoding.
-- [ ] glow: markdown rendering in the terminal.
+- [x] glow: markdown rendering in the terminal.
 - [ ] dust, duf: readable `du` / `df`.
 
 **Repo**

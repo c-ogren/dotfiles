@@ -23,8 +23,8 @@ gui:
   showBranchCommitHash: false
   showDivergenceFromBaseBranch: arrowAndNumber
   # Vim-ish workflow
-  wrapLinesInStagingView: true
-  useHunkModeInStagingView: true
+  wrapLinesInDiffView: true
+  useHunkModeInDiffView: true
   filterMode: fuzzy
   # GitHub Dark / deutan-friendly
   theme:
@@ -54,21 +54,21 @@ gui:
       - "#E5534B"
     defaultFgColor:
       - "#ADBAC7"
-  # Don't assign every author some random rainbow color.
-  authorColors:
-    "*": "#ADBAC7"
-  # Make common branch families visually distinct without relying
-  # primarily on red/green differences.
-  branchColorPatterns:
-    "^main$": "#539BF5"
-    "^master$": "#539BF5"
-    "^develop$": "#56D4DD"
-    "^feature/": "#986EE2"
-    "^feat/": "#986EE2"
-    "^fix/": "#C69026"
-    "^hotfix/": "#E5534B"
-    "^setup/": "#56D4DD"
-    "^chore/": "#768390"
+    # Don't assign every author some random rainbow color.
+    authorColors:
+      "*": "#ADBAC7"
+    # Make common branch families visually distinct without relying
+    # primarily on red/green differences.
+    branchColorPatterns:
+      "^main$": "#539BF5"
+      "^master$": "#539BF5"
+      "^develop$": "#56D4DD"
+      "^feature/": "#986EE2"
+      "^feat/": "#986EE2"
+      "^fix/": "#C69026"
+      "^hotfix/": "#E5534B"
+      "^setup/": "#56D4DD"
+      "^chore/": "#768390"
 git:
   autoFetch: true
   autoRefresh: true

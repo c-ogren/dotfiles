@@ -21,8 +21,9 @@
 # peaclock specific
 peaclock/.peaclock/history/
 
-# cava specific (cava regenerates its stock shaders on launch)
+# cava specific (cava regenerates its stock shaders and example themes on launch)
 cava/.config/cava/shaders/
+cava/.config/cava/themes/
 
 
 # gitk writes its window/UI state here

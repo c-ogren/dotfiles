@@ -463,6 +463,34 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 --------------------------------------------------
+-- Java config
+--------------------------------------------------
+
+-- Directory a Java file's package hangs off, derived from
+-- its `package` line (src/com/ex/Main.java with
+-- `package com.ex;` -> src). Falls back to the file's dir.
+-- Used by jdtls (build-less projects) and the javac linter.
+local function java_source_root(bufnr)
+	local dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p:h")
+
+	for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, 50, false)) do
+		local pkg = line:match("^%s*package%s+([%w_%.]+)%s*;")
+
+		if pkg then
+			local suffix = "/" .. pkg:gsub("%.", "/")
+
+			if dir:sub(-#suffix) == suffix then
+				return dir:sub(1, -#suffix - 1)
+			end
+
+			break
+		end
+	end
+
+	return dir
+end
+
+--------------------------------------------------
 -- Lazy.nvim bootstrap
 --------------------------------------------------
 
@@ -597,6 +625,68 @@ require("lazy").setup({
 			})
 
 			vim.lsp.enable("clangd")
+
+			-- Java: completion, signature help, hover,
+			-- imports, refactors. Needs `jdtls` on PATH
+			-- (AUR: jdtls).
+			vim.lsp.config("jdtls", {
+				-- Maven/Gradle/Ant root if there is one
+				-- (multi-module markers win). Otherwise the
+				-- package's source root, so plain .java
+				-- files get full checking instead of
+				-- "non-project file, only syntax errors".
+				root_dir = function(bufnr, on_dir)
+					on_dir(vim.fs.root(bufnr, {
+						{ "mvnw", "gradlew", "settings.gradle", "settings.gradle.kts" },
+						{ "pom.xml", "build.gradle", "build.gradle.kts", "build.xml" },
+					}) or java_source_root(bufnr))
+				end,
+
+				-- One workspace per full root path; the
+				-- lspconfig default keys on the basename,
+				-- so every `src` root would share one.
+				cmd = function(dispatchers, config)
+					local data_dir = vim.fn.stdpath("cache") .. "/jdtls/workspace/" .. config.root_dir:gsub("/", "%%")
+
+					return vim.lsp.rpc.start({ "jdtls", "-data", data_dir }, dispatchers, {
+						cwd = config.cmd_cwd,
+						env = config.cmd_env,
+						detached = config.detached,
+					})
+				end,
+
+				settings = {
+					java = {
+						-- Build-less roots are already the
+						-- source root (see root_dir).
+						project = {
+							sourcePaths = {
+								".",
+							},
+						},
+
+						signatureHelp = {
+							enabled = true,
+						},
+
+						completion = {
+							-- Suggest e.g. assertEquals before
+							-- the static import exists.
+							favoriteStaticMembers = {
+								"org.junit.jupiter.api.Assertions.*",
+								"org.mockito.Mockito.*",
+								"java.util.Objects.requireNonNull",
+							},
+						},
+					},
+				},
+			})
+
+			-- Without jdtls, Java falls back to the javac
+			-- linter instead of erroring on every open.
+			if vim.fn.executable("jdtls") == 1 then
+				vim.lsp.enable("jdtls")
+			end
 		end,
 	},
 
@@ -685,6 +775,7 @@ require("lazy").setup({
 				"rust",
 				"c",
 				"cpp",
+				"java",
 				"lua",
 				"json",
 				"css",
@@ -703,6 +794,7 @@ require("lazy").setup({
 					"javascriptreact",
 					"c",
 					"cpp",
+					"java",
 					"rust",
 					"lua",
 					"json",
@@ -861,6 +953,73 @@ require("lazy").setup({
 				}),
 			}
 
+			-- Java compile check: errors + -Xlint warnings.
+			--
+			-- -sourcepath lets sibling classes resolve.
+			-- Class files go to a cache dir, not the
+			-- project.
+			local severities = {
+				error = vim.diagnostic.severity.ERROR,
+				warning = vim.diagnostic.severity.WARN,
+				note = vim.diagnostic.severity.INFO,
+			}
+
+			lint.linters.javac = {
+				cmd = "javac",
+				stdin = false,
+				stream = "stderr",
+				ignore_exitcode = true,
+
+				args = {
+					"-Xlint:all",
+					"-proc:none",
+					"-implicit:none",
+					"-d",
+					vim.fn.stdpath("cache") .. "/javac-lint",
+					"-sourcepath",
+					function()
+						return java_source_root(0)
+					end,
+				},
+
+				-- javac prints a header line, the source
+				-- line, a caret line marking the column,
+				-- then indented detail lines.
+				parser = function(output, bufnr)
+					local bufname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p")
+					local diagnostics = {}
+					local current
+
+					for line in vim.gsplit(output, "\n") do
+						local file, lnum, kind, msg = line:match("^(.+%.java):(%d+): (%a+): (.*)$")
+
+						if file then
+							current = nil
+
+							if vim.fn.fnamemodify(file, ":p") == bufname then
+								current = {
+									lnum = tonumber(lnum) - 1,
+									col = 0,
+									message = msg,
+									severity = severities[kind] or vim.diagnostic.severity.ERROR,
+									source = "javac",
+									after_caret = false,
+								}
+
+								table.insert(diagnostics, current)
+							end
+						elseif current and line:match("^%s*%^%s*$") then
+							current.col = line:find("^", 1, true) - 1
+							current.after_caret = true
+						elseif current and current.after_caret and line:match("^  %S") then
+							current.message = current.message .. "\n" .. vim.trim(line)
+						end
+					end
+
+					return diagnostics
+				end,
+			}
+
 			-- ESLint runs automatically.
 			--
 			-- tsc does NOT run on every save because
@@ -869,6 +1028,10 @@ require("lazy").setup({
 			-- Rust diagnostics/clippy are handled by
 			-- rustaceanvim/rust-analyzer.
 			lint.linters_by_ft = {
+				java = {
+					"javac",
+				},
+
 				typescript = {
 					"eslint",
 				},
@@ -887,7 +1050,20 @@ require("lazy").setup({
 			}
 
 			vim.api.nvim_create_autocmd("BufWritePost", {
-				callback = function()
+				callback = function(args)
+					-- jdtls already reports Java errors (with
+					-- the real classpath); javac is only the
+					-- fallback when jdtls isn't running.
+					if
+						vim.bo[args.buf].filetype == "java"
+						and #vim.lsp.get_clients({
+							bufnr = args.buf,
+							name = "jdtls",
+						}) > 0
+					then
+						return
+					end
+
 					lint.try_lint()
 				end,
 			})
