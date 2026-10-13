@@ -1,0 +1,36 @@
+:root {
+	--accent-bg-color: #e3b341;
+	--accent-fg-color: #0d1117;
+	--accent-color: #e3b341;
+	--destructive-bg-color: #ff7b72;
+	--destructive-fg-color: #0d1117;
+	--destructive-color: #ff7b72;
+	--dialog-bg-color: #161b22;
+	--dialog-fg-color: #c9d1d9;
+}
+
+*:focus-visible,
+button:focus-visible {
+	outline-color: #e3b341;
+	outline-width: 2px;
+	outline-offset: -2px;
+}
+
+dialog.alert .response-area button {
+	background-color: #21262d;
+	color: #c9d1d9;
+	border-radius: 6px;
+}
+
+dialog.alert .response-area button:hover {
+	background-color: #30363d;
+}
+
+dialog.alert .response-area button.destructive {
+	background-color: #ff7b72;
+	color: #0d1117;
+}
+
+dialog.alert .response-area button.destructive:hover {
+	background-color: #ffa198;
+}

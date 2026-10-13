@@ -17,7 +17,7 @@ method = pipewire
 source = auto
 
 [output]
-method = ncurses
+method = noncurses
 channels = stereo
 mono_option = average
 

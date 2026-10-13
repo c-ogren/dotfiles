@@ -28,3 +28,6 @@ palette = 12=#58a6ff
 palette = 13=#d2a8ff
 palette = 14=#56b4e9
 palette = 15=#ffffff
+
+# Styles libadwaita dialogs (close confirm, etc.)
+gtk-custom-css = gtk.css
