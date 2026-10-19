@@ -18,10 +18,10 @@ zsh/.zshrc                   ->  ~/.zshrc
 | Desktop | `hypr` (Hyprland Lua config + hyprlock + hypridle), `waybar`, `rofi`, `udiskie` |
 | Terminal / shell | `ghostty`, `zsh`, `starship`, `tmux`, `zellij`, `bat` |
 | Editor | `nvim` (single `init.lua`, lazy.nvim, pinned via `lazy-lock.json`) |
-| Dev tools | `git` (+ git-delta), `mise`, `lazygit`, `lazydocker`, `posting` |
+| Dev tools | `git` (+ git-delta), `claude` (Claude Code theme), `mise`, `lazygit`, `lazydocker`, `posting` |
 | Session env | `environment` (systemd `environment.d`: `EDITOR`, `PATH`) |
 | Scripts | `scripts` (`~/.local/bin`: `grim-video.sh` screen recorder) |
-| TUIs | `yazi`, `bottom`, `cava`, `ncspot`, `fastfetch`, `peaclock`, `glow` |
+| TUIs | `yazi`, `bottom`, `btop`, `cava`, `ncspot`, `fastfetch`, `peaclock`, `glow` |
 
 ## Install
 
@@ -75,7 +75,9 @@ rules below.
 
 Used by: ghostty, nvim, rofi, cava, ncspot, zellij, fastfetch, peaclock,
 Hyprland borders, eza, bat and git-delta (`bat/.config/bat/themes/github-dark-deutan.tmTheme`),
-posting, glow (`glow/.config/glow/github-dark-deutan.json`, selected via `$GLOW_STYLE`).
+posting, glow (`glow/.config/glow/github-dark-deutan.json`, selected via `$GLOW_STYLE`),
+Claude Code (`claude/.claude/themes/github-dark-colorblind.json`, selected via `/theme`),
+btop (`btop/.config/btop/themes/github-dark-colorblind.theme`).
 
 | Role | Hex |
 |---|---|
@@ -177,7 +179,6 @@ Ideas not set up yet. Anything added should follow the deutan rules above.
 
 **CLI / dev**
 - [ ] atuin: SQLite shell history search (replaces Ctrl-R), optional sync.
-- [ ] btop: alternative to btm, with a GPU panel.
 - [ ] fd: faster `find`; picked up by yazi, fzf and telescope.
 - [ ] direnv: per-project env vars (or mise's env support).
 - [ ] gh-dash: TUI dashboard for PRs / issues.

@@ -1,0 +1,95 @@
+# GitHub Dark Colorblind for btop, matching the ghostty palette.
+# Deutan-friendly: load gradients run blue -> gold -> salmon
+# instead of green -> yellow -> red.
+
+# Main background, matches ghostty
+theme[main_bg]="#0d1117"
+
+# Main text
+theme[main_fg]="#c9d1d9"
+
+# Box titles
+theme[title]="#c9d1d9"
+
+# Highlighted keys in titles and menus
+theme[hi_fg]="#58a6ff"
+
+# Selected process row
+theme[selected_bg]="#1f3a5f"
+theme[selected_fg]="#ffffff"
+
+# Inactive or disabled text
+theme[inactive_fg]="#484f58"
+
+# Text drawn on top of graphs
+theme[graph_text]="#768390"
+
+# Empty part of meters
+theme[meter_bg]="#30363d"
+
+# Misc process info (mini cpu graphs, details)
+theme[proc_misc]="#79c0ff"
+
+# Box outlines
+theme[cpu_box]="#444c56"
+theme[mem_box]="#444c56"
+theme[net_box]="#444c56"
+theme[proc_box]="#444c56"
+
+# Dividers inside boxes
+theme[div_line]="#30363d"
+
+# Temperatures
+theme[temp_start]="#58a6ff"
+theme[temp_mid]="#d29922"
+theme[temp_end]="#ffa198"
+
+# CPU load
+theme[cpu_start]="#58a6ff"
+theme[cpu_mid]="#d29922"
+theme[cpu_end]="#ffa198"
+
+# Memory: free
+theme[free_start]="#1c4a4f"
+theme[free_mid]="#2a8a92"
+theme[free_end]="#39c5cf"
+
+# Memory: cached
+theme[cached_start]="#3b2a5a"
+theme[cached_mid]="#8a63c4"
+theme[cached_end]="#bc8cff"
+
+# Memory: available
+theme[available_start]="#1c3a52"
+theme[available_mid]="#3a7fb0"
+theme[available_end]="#56b4e9"
+
+# Memory: used (same scale as load)
+theme[used_start]="#58a6ff"
+theme[used_mid]="#d29922"
+theme[used_end]="#ffa198"
+
+# Network download
+theme[download_start]="#163356"
+theme[download_mid]="#1f6feb"
+theme[download_end]="#79c0ff"
+
+# Network upload
+theme[upload_start]="#3b2a5a"
+theme[upload_mid]="#8a63c4"
+theme[upload_end]="#d2a8ff"
+
+# Process cpu/mem bars
+theme[process_start]="#58a6ff"
+theme[process_mid]="#d29922"
+theme[process_end]="#ffa198"
+
+# Process list banners (paused, following)
+theme[proc_pause_bg]="#4a3d10"
+theme[proc_follow_bg]="#163356"
+theme[proc_banner_bg]="#21262d"
+theme[proc_banner_fg]="#c9d1d9"
+
+# Followed process row
+theme[followed_bg]="#163356"
+theme[followed_fg]="#ffffff"

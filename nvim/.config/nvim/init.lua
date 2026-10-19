@@ -47,10 +47,81 @@ vim.opt.completeopt = {
 -- Neovim 0.11+
 vim.o.winborder = "rounded"
 --------------------------------------------------
+-- Italic keywords
+--------------------------------------------------
+
+-- Treesitter captures to italicize. Add a language
+-- suffix to scope one to a single filetype,
+-- e.g. "@keyword.modifier.rust".
+local italic_groups = {
+	"@keyword", -- let, impl, where, var, typedef
+	"@keyword.return", -- return, yield
+	"@keyword.function", -- fn, function
+	"@keyword.modifier", -- pub, const, static, extern, readonly, private
+	"@keyword.type", -- struct, enum, union, interface, class
+	"@keyword.coroutine", -- async, await
+	"@keyword.import", -- use, import, export, #include
+	"@keyword.conditional", -- if, else, match, switch, case
+	"@keyword.repeat", -- for, while, loop, do
+	"@keyword.exception", -- try, catch, throw
+}
+
+-- Merge style attrs into a group while keeping the
+-- theme's colors. Undefined captures fall back to their
+-- parent (@keyword.return.rust -> @keyword.return -> @keyword).
+local function add_style(group, attrs)
+	local name = group
+	local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
+
+	while vim.tbl_isempty(hl) and name:find("%.") do
+		name = name:gsub("%.[^.]*$", "")
+		hl = vim.api.nvim_get_hl(0, { name = name, link = false })
+	end
+
+	vim.api.nvim_set_hl(0, group, vim.tbl_extend("force", hl, attrs))
+end
+
+--------------------------------------------------
 -- Deutan-friendly highlights
 --------------------------------------------------
 
+-- One palette for inline, sign, and float diagnostics.
+local diagnostic_colors = {
+	Error = "#ffa198", -- salmon
+	Warn = "#e3b341", -- yellow
+	Info = "#79c0ff", -- light blue
+	Hint = "#56b4e9", -- sky blue
+}
+
+-- Underline shape per severity, so they differ
+-- without relying on color.
+local diagnostic_underlines = {
+	Error = "undercurl",
+	Warn = "underdashed",
+	Info = "underdotted",
+	Hint = "underdotted",
+}
+
 local function apply_highlights()
+	for _, group in ipairs(italic_groups) do
+		add_style(group, { italic = true })
+	end
+
+	-- Bold function definitions only. Calls and LSP
+	-- function tokens otherwise fall back to @function,
+	-- so pin them to the plain style first.
+	for _, group in ipairs({
+		"@function.call",
+		"@function.method.call",
+		"@lsp.type.function",
+		"@lsp.type.method",
+	}) do
+		add_style(group, {})
+	end
+
+	add_style("@function", { bold = true })
+	add_style("@function.method", { bold = true })
+
 	local float_bg = "#1f2428"
 	local border = "#6e7681"
 
@@ -115,25 +186,59 @@ local function apply_highlights()
 	})
 
 	-- Diagnostics
-	vim.api.nvim_set_hl(0, "DiagnosticFloatingError", {
-		bg = float_bg,
+	--
+	-- Severity is shown by color, sign icon, and
+	-- underline shape. Errors are also bold.
+	for severity, color in pairs(diagnostic_colors) do
+		local bold = severity == "Error"
+
+		vim.api.nvim_set_hl(0, "Diagnostic" .. severity, {
+			fg = color,
+			bold = bold,
+		})
+
+		vim.api.nvim_set_hl(0, "DiagnosticVirtualText" .. severity, {
+			fg = color,
+			bold = bold,
+		})
+
+		vim.api.nvim_set_hl(0, "DiagnosticFloating" .. severity, {
+			bg = float_bg,
+			fg = color,
+			bold = bold,
+		})
+
+		vim.api.nvim_set_hl(0, "DiagnosticUnderline" .. severity, {
+			sp = color,
+			[diagnostic_underlines[severity]] = true,
+		})
+	end
+
+	-- Diff mode (:diffthis, fugitive, diffview)
+	--
+	-- Matches GitSigns and delta:
+	-- Add = blue, Change = yellow, Delete = salmon.
+	-- No fg on add/change, so syntax colors show through.
+	vim.api.nvim_set_hl(0, "DiffAdd", {
+		bg = "#0f2a4a",
+	})
+
+	vim.api.nvim_set_hl(0, "DiffChange", {
+		bg = "#262c36",
+	})
+
+	vim.api.nvim_set_hl(0, "DiffText", {
+		bg = "#4a3d10",
+		bold = true,
+	})
+
+	vim.api.nvim_set_hl(0, "DiffDelete", {
+		bg = "#3b1b1d",
 		fg = "#ffa198",
 	})
 
-	vim.api.nvim_set_hl(0, "DiagnosticFloatingWarn", {
-		bg = float_bg,
-		fg = "#e3b341",
-	})
-
-	vim.api.nvim_set_hl(0, "DiagnosticFloatingInfo", {
-		bg = float_bg,
-		fg = "#79c0ff",
-	})
-
-	vim.api.nvim_set_hl(0, "DiagnosticFloatingHint", {
-		bg = float_bg,
-		fg = "#56b4e9",
-	})
+	-- Search
+	add_style("CurSearch", { bold = true })
 
 	-- GitSigns
 	--
@@ -340,10 +445,28 @@ vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- Diagnostics
 --------------------------------------------------
 
+-- A distinct icon per severity, so they differ
+-- without relying on color.
+local diagnostic_icons = {
+	[vim.diagnostic.severity.ERROR] = " ",
+	[vim.diagnostic.severity.WARN] = " ",
+	[vim.diagnostic.severity.INFO] = " ",
+	[vim.diagnostic.severity.HINT] = " ",
+}
+
 vim.diagnostic.config({
-	virtual_text = true,
-	signs = true,
+	virtual_text = {
+		prefix = function(diagnostic)
+			return diagnostic_icons[diagnostic.severity]
+		end,
+	},
+
+	signs = {
+		text = diagnostic_icons,
+	},
+
 	underline = true,
+	severity_sort = true,
 
 	float = {
 		border = "rounded",
@@ -530,6 +653,9 @@ require("lazy").setup({
 			require("github-theme").setup({
 				options = {
 					transparent = true,
+					styles = {
+						comments = "italic",
+					},
 				},
 			})
 
@@ -783,6 +909,7 @@ require("lazy").setup({
 				"scss",
 				"html",
 				"diff",
+				"regex",
 			}
 
 			require("nvim-treesitter").install(parsers)
