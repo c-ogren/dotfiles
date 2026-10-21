@@ -1192,6 +1192,13 @@ require("lazy").setup({
 						return
 					end
 
+					-- Strudel files use the javascript filetype,
+					-- but ESLint doesn't know Strudel's globals.
+					local filename = vim.api.nvim_buf_get_name(args.buf)
+					if filename:match("%.str$") or filename:match("%.std$") then
+						return
+					end
+
 					lint.try_lint()
 				end,
 			})
@@ -1560,22 +1567,38 @@ require("lazy").setup({
 		},
 	},
 
-	--- Trying strudel
+	------------------------------------------------
+	-- Strudel (local plugin, ~/dev/strudel-play.nvim)
+	------------------------------------------------
+
 	{
-		"gruvw/strudel.nvim",
+		dir = "~/dev/strudel-play.nvim",
 		build = "npm ci",
+		-- Not lazy: it registers the .str filetype at startup.
+		lazy = false,
 
-		config = function()
-			require("strudel").setup({
-				headless = false,
-				browser_exec_path = vim.fn.exepath("chromium"),
-				sync_cursor = true,
+		opts = {
+			-- Gold, so playing events stand out from blue selections.
+			highlight = { bg = "#4a3d10", fg = "#e3b341", bold = true },
+		},
 
-				ui = {
-					maximise_menu_panel = true,
-				},
-			})
-		end,
+		keys = {
+			{
+				"<leader>sp",
+				"<cmd>StrudelPlay<CR>",
+				desc = "Strudel play / update",
+			},
+			{
+				"<leader>ss",
+				"<cmd>StrudelStop<CR>",
+				desc = "Strudel stop",
+			},
+			{
+				"<leader>sq",
+				"<cmd>StrudelQuit<CR>",
+				desc = "Strudel quit engine",
+			},
+		},
 	},
 
 	------------------------------------------------

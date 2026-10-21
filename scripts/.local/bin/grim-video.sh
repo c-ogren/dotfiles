@@ -16,6 +16,7 @@ GEOM=$(slurp)
 
 if [ -n "$GEOM" ]; then
     notify-send "Recording" "Recording area: $GEOM"
-    # -g sets the geometry, -f sets the target file
-    wf-recorder -g "$GEOM" -f "$OUTPUT_FILE"
+    # -g sets the geometry, --audio records desktop audio via the default sink's monitor, -f sets the target file
+    # (the device must be attached with '=': with a space wf-recorder ignores it and records the mic)
+    wf-recorder -g "$GEOM" --audio="$(pactl get-default-sink).monitor" -f "$OUTPUT_FILE"
 fi
