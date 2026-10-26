@@ -595,7 +595,8 @@ vim.api.nvim_create_autocmd("FileType", {
 -- `package com.ex;` -> src). Falls back to the file's dir.
 -- Used by jdtls (build-less projects) and the javac linter.
 local function java_source_root(bufnr)
-	local dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p:h")
+	-- normalize: Windows paths use backslashes.
+	local dir = vim.fs.normalize(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p:h"))
 
 	for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, 50, false)) do
 		local pkg = line:match("^%s*package%s+([%w_%.]+)%s*;")
@@ -773,7 +774,7 @@ require("lazy").setup({
 				-- lspconfig default keys on the basename,
 				-- so every `src` root would share one.
 				cmd = function(dispatchers, config)
-					local data_dir = vim.fn.stdpath("cache") .. "/jdtls/workspace/" .. config.root_dir:gsub("/", "%%")
+					local data_dir = vim.fn.stdpath("cache") .. "/jdtls/workspace/" .. config.root_dir:gsub("[/\\:]", "%%")
 
 					return vim.lsp.rpc.start({ "jdtls", "-data", data_dir }, dispatchers, {
 						cwd = config.cmd_cwd,
@@ -1573,6 +1574,8 @@ require("lazy").setup({
 
 	{
 		dir = "~/dev/strudel-play.nvim",
+		-- Skip on machines without the checkout (e.g. Windows).
+		cond = vim.fn.isdirectory(vim.fn.expand("~/dev/strudel-play.nvim")) == 1,
 		build = "npm ci",
 		-- Not lazy: it registers the .str filetype at startup.
 		lazy = false,

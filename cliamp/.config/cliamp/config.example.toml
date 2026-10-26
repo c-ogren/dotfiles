@@ -1,0 +1,9 @@
+theme = "github-dark-colorblind"
+
+speed = 1.00
+eq_preset = "Custom"
+eq = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+shuffle = true
+[spotify]
+client_id = "YOUR_SPOTIFY_CLIENT_ID"
+bitrate   = 320

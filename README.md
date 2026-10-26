@@ -21,7 +21,7 @@ zsh/.zshrc                   ->  ~/.zshrc
 | Dev tools | `git` (+ git-delta), `claude` (Claude Code theme), `mise`, `lazygit`, `lazydocker`, `posting` |
 | Session env | `environment` (systemd `environment.d`: `EDITOR`, `PATH`) |
 | Scripts | `scripts` (`~/.local/bin`: `grim-video.sh` screen recorder) |
-| TUIs | `yazi`, `bottom`, `btop`, `cava`, `ncspot`, `fastfetch`, `peaclock`, `glow` |
+| TUIs | `yazi`, `bottom`, `btop`, `cava`, `ncspot`, `cliamp`, `fastfetch`, `peaclock`, `glow` |
 
 ## Install
 
@@ -39,7 +39,8 @@ bat cache --build           # register the custom bat theme (bat + delta use it)
 Note: Stow "folds" directories, so e.g. `~/.config/nvim` is a single symlink
 into this repo. Anything an app writes into its config dir lands in the repo —
 runtime state is kept out of git via `.gitignore` (ncspot `userstate.cbor`,
-peaclock history, cava's regenerated shaders, gitk's UI state).
+peaclock history, cava's regenerated shaders, gitk's UI state, cliamp's
+history/resume/socket).
 
 ## Dependencies
 
@@ -51,7 +52,7 @@ Not exhaustive, but what the configs call out to:
   brightnessctl, grim, slurp, wf-recorder, libnotify, wl-clipboard, pavucontrol, Bibata-Modern-Ice
   cursor, Papirus-Dark icons, JetBrainsMono Nerd Font
 - **Apps:** ghostty, neovim (0.11+), tmux, zellij, yazi, imv, zathura, btm,
-  cava, ncspot, lazygit, lazydocker, posting, fastfetch, peaclock, glow
+  cava, ncspot, cliamp, lazygit, lazydocker, posting, fastfetch, peaclock, glow
 - **Neovim tooling:** node/pnpm/prettier/typescript/typescript-language-server
   via `mise`, clangd, clang-format, rustup (rust-analyzer, rustfmt, clippy),
   stylua, eslint (per project), chromium (strudel.nvim)
@@ -77,7 +78,8 @@ Used by: ghostty, nvim, rofi, cava, ncspot, zellij, fastfetch, peaclock,
 Hyprland borders, eza, bat and git-delta (`bat/.config/bat/themes/github-dark-deutan.tmTheme`),
 posting, glow (`glow/.config/glow/github-dark-deutan.json`, selected via `$GLOW_STYLE`),
 Claude Code (`claude/.claude/themes/github-dark-colorblind.json`, selected via `/theme`),
-btop (`btop/.config/btop/themes/github-dark-colorblind.theme`).
+btop (`btop/.config/btop/themes/github-dark-colorblind.theme`),
+cliamp (`cliamp/.config/cliamp/themes/github-dark-colorblind.toml`; its "green" slot is cyan).
 
 | Role | Hex |
 |---|---|
@@ -148,7 +150,8 @@ highlighting.
 - [x] hyprlock re-themed to GitHub Dark; shares `~/wallpaper/wallpaper.png` with swaybg.
 - [x] `dbus-update-activation-environment --systemd --all` runs before waybar/swaync.
 - [x] Removed unused `fileManager`; wallpaper path is a single variable.
-- [x] hypridle: dim at 2.5 min, lock at 5, DPMS off at 5.5, suspend at 30.
+- [x] hypridle: lock at 10 min, DPMS off at 10.5; on battery also dim at 7.5
+      and suspend at 30 (skipped on AC so music keeps playing).
 - [x] Waybar temperature reads coretemp by stable device path; unused
       `workspaces.format-icons` removed.
 

@@ -32,3 +32,10 @@ git/.config/git/gitk
 # posting: only themes are tracked; anything else it writes to its data dir is state
 posting/.local/share/posting/*
 !posting/.local/share/posting/themes/
+
+# cliamp: only the example config + themes are tracked. config.toml holds the
+# Spotify client_id and spotify_credentials.json the OAuth tokens; history,
+# resume, socket and log are state.
+cliamp/.config/cliamp/*
+!cliamp/.config/cliamp/config.example.toml
+!cliamp/.config/cliamp/themes/
