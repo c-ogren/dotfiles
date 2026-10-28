@@ -1,3 +1,5 @@
+gtk-single-instance = true
+
 font-family = "JetBrainsMono Nerd Font"
 font-size = 12
 
@@ -10,12 +12,15 @@ cursor-style = block
 cursor-style-blink = true
 shell-integration-features = no-cursor
 
+# Deutan-tuned: tested under a deuteranopia simulation so no two
+# slots blur together. Green maps to blue, magenta to cream (purple
+# reads as blue), and red is darker so it separates from yellow.
 palette = 0=#161b22
-palette = 1=#ff7b72
+palette = 1=#e5534b
 palette = 2=#58a6ff
 palette = 3=#d29922
 palette = 4=#1f6feb
-palette = 5=#bc8cff
+palette = 5=#f6fec1
 palette = 6=#39c5cf
 palette = 7=#768390
 
@@ -25,8 +30,8 @@ palette = 9=#ffa198
 palette = 10=#79c0ff
 palette = 11=#e3b341
 palette = 12=#58a6ff
-palette = 13=#d2a8ff
-palette = 14=#56b4e9
+palette = 13=#db61a2
+palette = 14=#b7fcfe
 palette = 15=#ffffff
 
 # Styles libadwaita dialogs (close confirm, etc.)

@@ -90,7 +90,8 @@ local diagnostic_colors = {
 	Error = "#ffa198", -- salmon
 	Warn = "#e3b341", -- yellow
 	Info = "#79c0ff", -- light blue
-	Hint = "#56b4e9", -- sky blue
+	Hint = "#b7fcfe", -- pale cyan
+	Ok = "#39c5cf", -- cyan
 }
 
 -- Underline shape per severity, so they differ
@@ -100,6 +101,7 @@ local diagnostic_underlines = {
 	Warn = "underdashed",
 	Info = "underdotted",
 	Hint = "underdotted",
+	Ok = "underline",
 }
 
 local function apply_highlights()
@@ -303,6 +305,31 @@ local function apply_highlights()
 	vim.api.nvim_set_hl(0, "TerminalNormal", {
 		bg = float_bg,
 	})
+
+	-- Same ANSI palette as Ghostty, so :terminal output
+	-- looks the same as outside nvim. The colorscheme's
+	-- own slot 8 is nearly the float background, which
+	-- hid zsh autosuggestions.
+	for i, color in ipairs({
+		"#161b22",
+		"#e5534b",
+		"#58a6ff",
+		"#d29922",
+		"#1f6feb",
+		"#f6fec1",
+		"#39c5cf",
+		"#768390",
+		"#484f58",
+		"#ffa198",
+		"#79c0ff",
+		"#e3b341",
+		"#58a6ff",
+		"#db61a2",
+		"#b7fcfe",
+		"#ffffff",
+	}) do
+		vim.g["terminal_color_" .. (i - 1)] = color
+	end
 end
 
 -- Reapply custom colors whenever a colorscheme loads.
@@ -508,12 +535,97 @@ vim.g.rustaceanvim = {
 	},
 }
 
+-- Name of the Cargo binary a file belongs to: the bin whose
+-- entry file it is, else the bin with the deepest folder
+-- holding it (src/bin/foo/util.rs -> foo, src/util.rs -> the
+-- src/main.rs bin). Asks cargo, so [[bin]] paths and renames
+-- work. nil when cargo fails or the crate has no binaries.
+local function cargo_bin_for(root, file)
+	local result = vim.system({
+		"cargo",
+		"metadata",
+		"--no-deps",
+		"--format-version",
+		"1",
+		"--manifest-path",
+		root .. "/Cargo.toml",
+	}):wait()
+
+	if result.code ~= 0 then
+		return nil
+	end
+
+	-- normalize: Windows paths use backslashes.
+	file = vim.fs.normalize(file)
+
+	local manifest = vim.fs.normalize(root .. "/Cargo.toml")
+	local best, best_len
+
+	for _, package in ipairs(vim.json.decode(result.stdout).packages) do
+		if vim.fs.normalize(package.manifest_path) == manifest then
+			for _, target in ipairs(package.targets) do
+				if vim.tbl_contains(target.kind, "bin") then
+					local src = vim.fs.normalize(target.src_path)
+
+					if src == file then
+						return target.name
+					end
+
+					local dir = vim.fs.dirname(src) .. "/"
+
+					if file:sub(1, #dir) == dir and #dir > (best_len or 0) then
+						best, best_len = target.name, #dir
+					end
+				end
+			end
+		end
+	end
+
+	return best
+end
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "rust",
 
 	callback = function()
 		vim.opt_local.shiftwidth = 4
 		vim.opt_local.tabstop = 4
+
+		-- Same key as C's compile-and-run. Inside a Cargo
+		-- project, cargo run (the current file's binary when in
+		-- src/bin/); otherwise rustc the lone file.
+		vim.keymap.set("n", "<leader>cr", function()
+			vim.cmd("write")
+
+			local root = vim.fs.root(0, "Cargo.toml")
+			local cmd
+
+			if root then
+				local bin = cargo_bin_for(root, vim.fn.expand("%:p"))
+
+				cmd = "cd " .. vim.fn.shellescape(root) .. " && cargo run"
+
+				if bin then
+					cmd = cmd .. " --bin " .. vim.fn.shellescape(bin)
+				end
+			else
+				local file = vim.fn.expand("%:p")
+				local output = vim.fn.expand("%:p:r")
+
+				cmd = "rustc -g "
+					.. vim.fn.shellescape(file)
+					.. " -o "
+					.. vim.fn.shellescape(output)
+					.. " && "
+					.. vim.fn.shellescape(output)
+			end
+
+			vim.cmd("botright 12split | terminal " .. cmd)
+			vim.cmd("startinsert")
+		end, {
+			buffer = true,
+			desc = "Compile and run Rust",
+		})
 
 		vim.keymap.set("n", "<leader>rr", function()
 			vim.cmd.RustLsp("runnables")
@@ -569,8 +681,14 @@ vim.api.nvim_create_autocmd("FileType", {
 			local file = vim.fn.expand("%:p")
 			local output = vim.fn.expand("%:p:r")
 
+			-- clang matches clangd's diagnostics; fall back to
+			-- gcc where clang isn't installed.
+			local cc = vim.fn.executable("clang") == 1 and "clang" or "gcc"
+
 			vim.cmd(
-				"botright 12split | terminal gcc -Wall -Wextra -Wpedantic -g "
+				"botright 12split | terminal "
+					.. cc
+					.. " -Wall -Wextra -Wpedantic -g "
 					.. vim.fn.shellescape(file)
 					.. " -o "
 					.. vim.fn.shellescape(output)
@@ -774,7 +892,9 @@ require("lazy").setup({
 				-- lspconfig default keys on the basename,
 				-- so every `src` root would share one.
 				cmd = function(dispatchers, config)
-					local data_dir = vim.fn.stdpath("cache") .. "/jdtls/workspace/" .. config.root_dir:gsub("[/\\:]", "%%")
+					local data_dir = vim.fn.stdpath("cache")
+						.. "/jdtls/workspace/"
+						.. config.root_dir:gsub("[/\\:]", "%%")
 
 					return vim.lsp.rpc.start({ "jdtls", "-data", data_dir }, dispatchers, {
 						cwd = config.cmd_cwd,

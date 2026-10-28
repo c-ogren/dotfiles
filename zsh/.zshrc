@@ -34,7 +34,6 @@ setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
 setopt NO_BEEP
 
-
 # ============================================================
 # 3. Completion
 # ============================================================
@@ -349,6 +348,9 @@ firewall() {
 # ============================================================
 
 _zplug=/usr/share/zsh/plugins
+# Explicit grey instead of the default fg=8, which depends on the
+# terminal palette and nearly vanishes in nvim's :terminal.
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#6e7681'
 [[ -r $_zplug/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
     source $_zplug/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Must be sourced last.

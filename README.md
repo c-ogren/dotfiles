@@ -94,13 +94,17 @@ cliamp (`cliamp/.config/cliamp/themes/github-dark-colorblind.toml`; its "green" 
 | Blue deep | `#1f6feb` |
 | Blue light | `#79c0ff` |
 | Cyan | `#39c5cf` |
-| Sky (hint) | `#56b4e9` |
+| Sky | `#56b4e9` |
+| Pale cyan (hint, ANSI bright cyan) | `#b7fcfe` |
+| Cream (ANSI magenta) | `#f6fec1` |
 | Yellow | `#d29922` |
 | Yellow bright | `#e3b341` |
 | Salmon (error) | `#ff7b72` |
+| Red (ANSI red) | `#e5534b` |
 | Salmon light | `#ffa198` |
 | Purple | `#bc8cff` |
 | Purple light | `#d2a8ff` |
+| Pink (ANSI bright magenta) | `#db61a2` |
 
 ### GitHub Dark Dimmed
 
