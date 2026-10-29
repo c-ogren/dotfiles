@@ -351,6 +351,13 @@ _zplug=/usr/share/zsh/plugins
 # Explicit grey instead of the default fg=8, which depends on the
 # terminal palette and nearly vanishes in nvim's :terminal.
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#6e7681'
+# Bind widgets once instead of re-wrapping them before every prompt.
+# Nothing below defines widgets, so this is safe.
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+# Stop suggesting past 50 chars; history lookups get expensive on long lines.
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
+# Skip highlighting huge buffers (e.g. big pastes) entirely.
+ZSH_HIGHLIGHT_MAXLENGTH=300
 [[ -r $_zplug/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
     source $_zplug/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Must be sourced last.
