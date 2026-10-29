@@ -10,6 +10,8 @@ vim.g.maplocalleader = " "
 --------------------------------------------------
 
 vim.opt.updatetime = 250
+-- Default 1000ms makes keys that start a mapping (e.g. leader) feel laggy.
+vim.opt.timeoutlen = 300
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
