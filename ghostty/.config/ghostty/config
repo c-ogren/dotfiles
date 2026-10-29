@@ -9,7 +9,7 @@ background = #0d1117
 foreground = #c9d1d9
 cursor-color = #58a6ff
 cursor-style = block
-cursor-style-blink = true
+cursor-style-blink = false
 shell-integration-features = no-cursor
 
 # Deutan-tuned: tested under a deuteranopia simulation so no two
