@@ -42,6 +42,17 @@ runtime state is kept out of git via `.gitignore` (ncspot `userstate.cbor`,
 peaclock history, cava's regenerated shaders, gitk's UI state, cliamp's
 history/resume/socket).
 
+### System setup (outside Stow)
+
+Changes under `/etc` that Stow doesn't manage; redo them on a fresh install:
+
+```sh
+sudo envycontrol -s integrated   # NVIDIA dGPU off (Intel iGPU only); reboot after
+```
+
+This blacklists the NVIDIA driver and removes the card from the PCI bus, so the
+`nvrun` alias in `.zshrc` does nothing until `envycontrol -s hybrid`.
+
 ## Dependencies
 
 Not exhaustive, but what the configs call out to:

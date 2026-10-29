@@ -216,7 +216,10 @@ alias gl='git log --oneline --graph --decorate'
 (( $+commands[mise] )) && eval "$(mise activate zsh)"
 
 if (( $+commands[keychain] )) && [[ -f "$HOME/.ssh/id_ed25519" ]]; then
-    eval "$(keychain --eval --quiet id_ed25519)"
+    # keychain costs ~170ms per shell; reuse its saved agent env and only
+    # run it when that agent is unreachable or has no keys loaded.
+    [[ -r "$HOME/.keychain/$HOST-sh" ]] && source "$HOME/.keychain/$HOST-sh" >/dev/null
+    ssh-add -l &>/dev/null || eval "$(keychain --eval --quiet id_ed25519)"
 fi
 
 [[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
