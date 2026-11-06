@@ -73,6 +73,13 @@ git:
   autoFetch: true
   autoRefresh: true
   # Diffs through git-delta (styles live in ~/.gitconfig [delta]).
+  # delta's default file:// hyperlinks go to xdg-open -> nvim.desktop
+  # (Terminal=true) and lazygit blocks on it; lazygit-edit:// opens the
+  # file at that line in os.editPreset instead.
   diffRenderers:
     - colorArg: always
-      command: delta --dark --paging=never
+      command: >-
+        delta --dark --paging=never
+        --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+os:
+  editPreset: nvim

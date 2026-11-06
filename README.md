@@ -53,6 +53,28 @@ sudo envycontrol -s integrated   # NVIDIA dGPU off (Intel iGPU only); reboot aft
 This blacklists the NVIDIA driver and removes the card from the PCI bus, so the
 `nvrun` alias in `.zshrc` does nothing until `envycontrol -s hybrid`.
 
+Also on this machine (XPS 15 9560):
+
+- **Battery charge limit 75–80%** (battery is at ~56% of design capacity and
+  mostly on AC). `/etc/udev/rules.d/90-battery-charge-limit.rules`:
+  ```
+  ACTION=="add", SUBSYSTEM=="power_supply", KERNEL=="BAT0", ATTR{charge_control_end_threshold}="80", ATTR{charge_control_start_threshold}="75", ATTR{charge_types}="Custom"
+  ```
+  Dell firmware ignores the thresholds unless `charge_types` is `Custom`.
+- **Mask NVMe correctable RxErr.** The 970 EVO Plus logs thousands of
+  correctable PCIe receiver errors per boot (latest SSD firmware and BIOS
+  already installed). `/etc/udev/rules.d/90-nvme-mask-rxerr.rules` masks only
+  that bit; other AER reporting stays on:
+  ```
+  ACTION=="add", SUBSYSTEM=="pci", KERNEL=="0000:04:00.0", RUN+="/usr/bin/setpci -s 04:00.0 ECAP_AER+0x14.L=0x00000001:0x00000001"
+  ```
+- **`/boot` root-only:** `fmask=0077,dmask=0077` on its `/etc/fstab` line.
+- **systemd-boot** `timeout 0` in `/boot/loader/loader.conf` (hold Space for the menu).
+- **No `-debug` AUR packages:** `!debug` in `OPTIONS` in `/etc/makepkg.conf`.
+- `powerprofilesctl set balanced`; `systemctl enable --now paccache.timer`.
+- Not installed: `tlp` (conflicts with power-profiles-daemon), `dunst` (swaync
+  owns notifications).
+
 ## Dependencies
 
 Not exhaustive, but what the configs call out to:
