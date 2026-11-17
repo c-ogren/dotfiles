@@ -1,0 +1,94 @@
+/* Firefox UI in the dotfiles GitHub Dark palette (matches ghostty/waybar/rofi).
+ * Loaded because user.js sets toolkit.legacyUserProfileCustomizations.stylesheets.
+ * !important is needed to beat the inline vars set by the built-in dark theme. */
+
+:root {
+  --gh-bg:        #0d1117; /* ghostty background            */
+  --gh-surface:   #161b22; /* palette 0                     */
+  --gh-raised:    #22272e; /* waybar module background      */
+  --gh-border:    #444c56; /* waybar module border          */
+  --gh-fg:        #c9d1d9; /* ghostty foreground            */
+  --gh-fg-bright: #e6edf3; /* waybar text                   */
+  --gh-muted:     #768390; /* palette 7                     */
+  --gh-accent:    #58a6ff; /* cursor / palette 2            */
+  --gh-select:    #1f6feb; /* palette 4                     */
+
+  /* window frame + tab strip */
+  --lwt-accent-color: var(--gh-bg) !important;
+  --lwt-accent-color-inactive: var(--gh-bg) !important;
+  --lwt-text-color: var(--gh-fg) !important;
+  --toolbox-bgcolor: var(--gh-bg) !important;
+  --toolbox-bgcolor-inactive: var(--gh-bg) !important;
+  --toolbox-textcolor: var(--gh-fg) !important;
+  --toolbox-textcolor-inactive: var(--gh-muted) !important;
+
+  /* nav bar */
+  --toolbar-bgcolor: var(--gh-surface) !important;
+  --toolbar-color: var(--gh-fg) !important;
+  --toolbarbutton-icon-fill: var(--gh-fg) !important;
+  --toolbarbutton-hover-background: var(--gh-raised) !important;
+  --toolbarbutton-active-background: var(--gh-border) !important;
+  --chrome-content-separator-color: var(--gh-border) !important;
+
+  /* tabs */
+  --tab-selected-bgcolor: var(--gh-raised) !important;
+  --tab-selected-textcolor: var(--gh-fg-bright) !important;
+  --tab-hover-background-color: var(--gh-surface) !important;
+  --tab-loading-fill: var(--gh-accent) !important;
+  --tab-attention-icon-color: var(--gh-accent) !important;
+
+  /* url bar + search */
+  --toolbar-field-background-color: var(--gh-bg) !important;
+  --toolbar-field-color: var(--gh-fg) !important;
+  --toolbar-field-border-color: var(--gh-border) !important;
+  --toolbar-field-focus-background-color: var(--gh-bg) !important;
+  --toolbar-field-focus-color: var(--gh-fg-bright) !important;
+  --toolbar-field-focus-border-color: var(--gh-accent) !important;
+  --urlbarView-highlight-background: var(--gh-select) !important;
+  --urlbarView-highlight-color: #ffffff !important;
+  --urlbarView-hover-background: var(--gh-raised) !important;
+  --urlbarView-separator-color: var(--gh-border) !important;
+
+  /* menus, panels, popups */
+  --arrowpanel-background: var(--gh-surface) !important;
+  --arrowpanel-color: var(--gh-fg) !important;
+  --arrowpanel-border-color: var(--gh-border) !important;
+  --panel-separator-color: var(--gh-border) !important;
+  --panel-item-hover-bgcolor: var(--gh-raised) !important;
+
+  /* sidebar + vertical tabs */
+  --sidebar-background-color: var(--gh-bg) !important;
+  --sidebar-text-color: var(--gh-fg) !important;
+  --sidebar-border-color: var(--gh-border) !important;
+
+  /* focus rings, checkboxes, primary buttons */
+  --focus-outline-color: var(--gh-accent) !important;
+  --color-accent-primary: var(--gh-accent) !important;
+  --button-primary-bgcolor: var(--gh-select) !important;
+  --button-primary-color: #ffffff !important;
+}
+
+#navigator-toolbox,
+#TabsToolbar,
+#sidebar-main,
+#sidebar-box {
+  background-color: var(--gh-bg) !important;
+  color: var(--gh-fg) !important;
+}
+
+#nav-bar {
+  background-color: var(--gh-surface) !important;
+}
+
+/* thin accent line on the selected tab, like the waybar top border */
+.tabbrowser-tab[selected] .tab-background {
+  outline: 1px solid var(--gh-border) !important;
+  box-shadow: inset 2px 0 0 var(--gh-accent) !important;
+}
+
+/* menus (right-click, hamburger) */
+menupopup {
+  --panel-background: var(--gh-surface) !important;
+  --panel-color: var(--gh-fg) !important;
+  --panel-border-color: var(--gh-border) !important;
+}

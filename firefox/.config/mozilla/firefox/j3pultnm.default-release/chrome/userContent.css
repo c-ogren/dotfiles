@@ -1,0 +1,23 @@
+/* Firefox's own pages (new tab, home, settings) in the dotfiles GitHub Dark palette. */
+
+@-moz-document url-prefix("about:") {
+  :root {
+    --newtab-background-color: #0d1117 !important;
+    --newtab-background-color-secondary: #161b22 !important;
+    --newtab-text-primary-color: #c9d1d9 !important;
+    --in-content-page-background: #0d1117 !important;
+    --in-content-page-color: #c9d1d9 !important;
+    --in-content-box-background: #161b22 !important;
+    --in-content-box-border-color: #444c56 !important;
+    --background-color-canvas: #0d1117 !important;
+    --background-color-box: #161b22 !important;
+    --border-color: #444c56 !important;
+    --text-color: #c9d1d9 !important;
+    --color-accent-primary: #58a6ff !important;
+    --link-color: #58a6ff !important;
+  }
+
+  body {
+    background-color: #0d1117 !important;
+  }
+}
