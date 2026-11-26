@@ -23,15 +23,48 @@ zsh/.zshrc                   ->  ~/.zshrc
 | Scripts | `scripts` (`~/.local/bin`: `grim-video.sh` screen recorder) |
 | TUIs | `yazi`, `bottom`, `btop`, `cava`, `ncspot`, `cliamp`, `fastfetch`, `peaclock`, `glow` |
 
+`packages/` (package lists) and `bootstrap.sh` are not Stow packages.
+
 ## Install
 
 The repo is expected at `~/dotfiles` (Stow's default target is the parent
 directory, i.e. `$HOME`).
 
+### New machine
+
+Do the "Every machine" part of [System setup](#system-setup-outside-stow)
+first (multilib, `!debug`, the tui-tools repo), then:
+
+```sh
+cd ~/dotfiles
+./bootstrap.sh --dry-run desktop   # preview; changes nothing
+./bootstrap.sh desktop             # or: laptop
+```
+
+It installs `packages/common.txt` plus `packages/<laptop|desktop>.txt`
+(official-repo packages with pacman, the rest from the AUR with yay, building
+yay first if needed), links every Stow package, runs `bat cache --build`, then
+checks that every listed package is installed and every tracked file is linked,
+and exits non-zero if not. Safe to re-run.
+
+- Before stowing it creates `~/.config`, `~/.local/bin`, `~/.local/share` and
+  `~/.claude` as real directories. On a fresh home Stow would otherwise turn
+  them into symlinks into this repo, and everything apps write there would
+  land in git.
+- **Firefox** is not stowed: the profile directory name is different on every
+  install. Start Firefox once, then rerun the script. It links `user.js` and
+  `chrome/` into the `*.default-release` profile.
+
+**Keeping the lists current:** `./bootstrap.sh --dry-run laptop` on an
+existing machine lists packages that are explicitly installed but in no list,
+and listed packages that aren't installed. Hardware-specific packages go in
+`laptop.txt` / `desktop.txt`, everything else in `common.txt`.
+
+### Individual packages
+
 ```sh
 cd ~/dotfiles
 stow zsh nvim hypr waybar   # link individual packages
-stow */                     # or everything
 stow -D wofi                # unlink a package before deleting it
 bat cache --build           # register the custom bat theme (bat + delta use it)
 ```
@@ -44,7 +77,26 @@ history/resume/socket).
 
 ### System setup (outside Stow)
 
-Changes under `/etc` that Stow doesn't manage; redo them on a fresh install:
+Changes under `/etc` that Stow doesn't manage; redo them on a fresh install.
+
+**Every machine, before `bootstrap.sh`:**
+
+- `[multilib]` uncommented in `/etc/pacman.conf` (the `lib32-*` NVIDIA packages).
+- `!debug` in `OPTIONS` in `/etc/makepkg.conf`, so AUR builds (yay included)
+  don't produce `-debug` packages.
+- The **tui-tools** repo (for `tui-tools-all`) appended to `/etc/pacman.conf`:
+  ```
+  [tui-tools]
+  Server = https://pkgs.tui.tools/arch/$arch
+  ```
+  and its signing key trusted. `packages/tui-tools.asc` is the public key
+  exported from the laptop's pacman keyring:
+  ```sh
+  sudo pacman-key --add packages/tui-tools.asc
+  sudo pacman-key --lsign-key 767CFB337B01F32FFC073F3F389120B277E4FB44
+  ```
+
+**Laptop (XPS 15 9560):**
 
 ```sh
 sudo envycontrol -s integrated   # NVIDIA dGPU off (Intel iGPU only); reboot after
@@ -53,7 +105,7 @@ sudo envycontrol -s integrated   # NVIDIA dGPU off (Intel iGPU only); reboot aft
 This blacklists the NVIDIA driver and removes the card from the PCI bus, so the
 `nvrun` alias in `.zshrc` does nothing until `envycontrol -s hybrid`.
 
-Also on this machine (XPS 15 9560):
+Also on the laptop:
 
 - **Battery charge limit 75–80%** (battery is at ~56% of design capacity and
   mostly on AC). `/etc/udev/rules.d/90-battery-charge-limit.rules`:
@@ -70,7 +122,6 @@ Also on this machine (XPS 15 9560):
   ```
 - **`/boot` root-only:** `fmask=0077,dmask=0077` on its `/etc/fstab` line.
 - **systemd-boot** `timeout 0` in `/boot/loader/loader.conf` (hold Space for the menu).
-- **No `-debug` AUR packages:** `!debug` in `OPTIONS` in `/etc/makepkg.conf`.
 - `powerprofilesctl set balanced`; `systemctl enable --now paccache.timer`.
 - Not installed: `tlp` (conflicts with power-profiles-daemon), `dunst` (swaync
   owns notifications).
@@ -244,6 +295,7 @@ Ideas not set up yet. Anything added should follow the deutan rules above.
 - [ ] dust, duf: readable `du` / `df`.
 
 **Repo**
-- [ ] Bootstrap script: install a `pkglist.txt` via pacman/paru, then `stow`.
+- [x] Bootstrap script: `bootstrap.sh` installs `packages/*.txt` (pacman + yay),
+      then stows.
 - [ ] Pre-commit check for secrets / runtime state (Stow folding lets apps
       write straight into the repo).

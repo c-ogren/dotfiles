@@ -1,0 +1,3 @@
+# Not a Stow package: these are bootstrap.sh's package lists. Ignoring
+# everything keeps `stow */` from linking them into ~.
+.*

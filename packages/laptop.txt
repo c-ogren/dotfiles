@@ -1,0 +1,15 @@
+# XPS 15 9560: i7-7700HQ (Intel HD 630) + GTX 1050, NVIDIA normally off via
+# envycontrol (README › System setup).
+
+# Intel iGPU, thermals, Wi-Fi
+iwd
+thermald
+vulkan-intel
+
+# NVIDIA GTX 1050 (Pascal): 580xx legacy driver from the AUR, built with dkms
+dkms
+nvidia-prime
+envycontrol
+nvidia-580xx-dkms
+nvidia-580xx-utils
+lib32-nvidia-580xx-utils

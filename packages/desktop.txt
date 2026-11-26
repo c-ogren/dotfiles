@@ -1,0 +1,6 @@
+# Desktop: i9-9900K + RTX 5070. RTX 50-series (Blackwell) only works with the
+# open kernel modules. nvidia-open is prebuilt for the stock `linux` kernel;
+# use nvidia-open-dkms instead if you run another kernel.
+nvidia-open
+nvidia-utils
+lib32-nvidia-utils
