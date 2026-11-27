@@ -15,7 +15,7 @@ zsh/.zshrc                   ->  ~/.zshrc
 
 | Area | Packages |
 |---|---|
-| Desktop | `hypr` (Hyprland Lua config + hyprlock + hypridle), `waybar`, `rofi`, `udiskie`, `firefox` (`user.js`: Nerd Font everywhere) |
+| Desktop | `hypr` (Hyprland Lua config + hyprlock + hypridle; `modules/machine/laptop.lua` or `desktop.lua` loaded depending on whether there's a battery, with eye candy on the desktop only), `waybar`, `rofi`, `udiskie`, `firefox` (`user.js`: Nerd Font everywhere) |
 | Terminal / shell | `ghostty`, `zsh`, `starship`, `tmux`, `zellij`, `bat` |
 | Editor | `nvim` (single `init.lua`, lazy.nvim, pinned via `lazy-lock.json`) |
 | Dev tools | `git` (+ git-delta), `claude` (Claude Code theme), `mise`, `lazygit`, `lazydocker`, `posting` |

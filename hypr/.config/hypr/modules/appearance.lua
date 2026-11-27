@@ -24,8 +24,9 @@ hl.config({
 		resize_on_border = true,
 	},
 
-	-- Effects are off: this laptop renders 4K on an Intel HD 630, so every
-	-- per-window shader pass costs responsiveness.
+	-- Effects are off: the laptop renders 4K on an Intel HD 630, so every
+	-- per-window shader pass costs responsiveness. machine/desktop.lua turns
+	-- them on for the desktop.
 	decoration = {
 		rounding = 0,
 		active_opacity = 1.0,

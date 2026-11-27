@@ -78,7 +78,9 @@ else
 			(cd "$build/yay" && makepkg -si --needed)
 		fi
 		step "Installing ${#aur_pkgs[@]} AUR packages"
-		yay -S --needed "${aur_pkgs[@]}"
+		# One broken AUR build shouldn't stop the configs from being linked;
+		# the check at the end lists whatever is still missing.
+		yay -S --needed "${aur_pkgs[@]}" || warn "some AUR packages failed (see above); continuing"
 	fi
 fi
 
